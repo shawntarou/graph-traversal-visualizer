@@ -7,15 +7,15 @@ html,
 body {
   overflow-x: hidden;
   margin: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 html {
   height: 100%;
   width: 100%;
   font-size: 62.5%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #grid-container {
@@ -32,4 +32,12 @@ html {
   width: 50px;
   height: 50px;
   border: 1px solid rgb(69, 144, 255);
+}
+
+.start-node {
+  background: green;
+}
+
+.target-node {
+  background-color: red;
 }
