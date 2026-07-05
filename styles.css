@@ -41,3 +41,20 @@ html {
 .target-node {
   background-color: red;
 }
+
+.visited-node {
+  background-color: blue;
+  animation-name: toVisited;
+  animation-duration: 6s;
+  /* transition: transform 3s ease-in;
+  transform: scale(1); */
+}
+
+@keyframes toVisited {
+  from {
+    background-color: transparent;
+  }
+  to {
+    background-color: blue;
+  }
+}
