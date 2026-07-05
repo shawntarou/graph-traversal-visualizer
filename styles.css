@@ -45,9 +45,13 @@ html {
 .visited-node {
   background-color: blue;
   animation-name: toVisited;
-  animation-duration: 6s;
+  animation-duration: 3s;
   /* transition: transform 3s ease-in;
   transform: scale(1); */
+}
+
+.path-node {
+  background-color: yellow;
 }
 
 @keyframes toVisited {

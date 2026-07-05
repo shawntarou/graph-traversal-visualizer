@@ -1,12 +1,11 @@
 export class GridNode {
   #prevNode;
 
-  constructor(position, isStart, isTarget, gridRef, weight = 1.0) {
-    // might not need to store position
+  constructor(position, isStart, isTarget, weight = 1.0) {
     this.position = position;
     this.isStart = isStart;
     this.isTarget = isTarget;
-    this.gridRef = gridRef;
+    this.gridNodeElement = this.createGridNodeElement();
     this.weight = weight;
     this.#prevNode = null;
   }
@@ -17,5 +16,18 @@ export class GridNode {
 
   set prevNode(node) {
     this.#prevNode = node;
+  }
+
+  createGridNodeElement() {
+    let newGridNodeElement = document.createElement("div");
+    newGridNodeElement.classList.add("grid-node");
+    if (this.isStart === true) {
+      newGridNodeElement.classList.add("start-node");
+    }
+    if (this.isTarget === true) {
+      newGridNodeElement.classList.add("target-node");
+    }
+
+    return newGridNodeElement;
   }
 }

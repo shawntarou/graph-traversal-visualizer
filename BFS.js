@@ -46,9 +46,7 @@ export function BFS(grid, startNode, targetNode) {
       visited.push(newNode);
 
       // debug
-      // console.log(
-      //   `added (${front.position}) --> (${newNode.position})`,
-      // );
+      console.log(`added (${front.position}) --> (${newNode.position})`);
 
       if (newNode.position === targetNode.position) {
         return visited;
