@@ -7,7 +7,6 @@ export function BFS(grid, startNode, targetNode) {
   // slow queue - O(n) to shift (dequeue)
   let queue = [];
 
-  // need in order to see path
   let visited = [];
   queue.push(startNode);
   visited.push(startNode);
@@ -46,7 +45,7 @@ export function BFS(grid, startNode, targetNode) {
       visited.push(newNode);
 
       // debug
-      console.log(`added (${front.position}) --> (${newNode.position})`);
+      // console.log(`added (${front.position}) --> (${newNode.position})`);
 
       if (newNode.position === targetNode.position) {
         return visited;

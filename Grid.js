@@ -7,9 +7,10 @@ export class Grid {
   #nodes;
   #startNode;
   #targetNode;
+  #container;
 
   constructor(height = 20, width = 40) {
-    this.container = document.querySelector("#grid-container");
+    this.#container = document.querySelector("#grid-container");
     this.#height = 20;
     this.#width = 40;
     this.#startNode = null;
@@ -33,7 +34,7 @@ export class Grid {
     for (let row = 0; row < this.#height; ++row) {
       const gridRow = document.createElement("div");
       gridRow.classList.add("grid-row");
-      this.container.appendChild(gridRow);
+      this.#container.appendChild(gridRow);
 
       let newGridRow = [];
       for (let col = 0; col < this.#width; ++col) {
@@ -62,17 +63,23 @@ export class Grid {
 
   doBFS() {
     let visitedNodes = BFS(this, this.#startNode, this.#targetNode);
-    // console.log(visitedNodes);
+    this.displayVisitedNodes(visitedNodes);
+    this.displayPathNodes(visitedNodes);
+  }
+
+  displayVisitedNodes(visitedNodes) {
     for (let i = visitedNodes.length - 2; i > 0; --i) {
       visitedNodes[i].gridNodeElement.classList.add("visited-node");
     }
+  }
 
-    let pathNode = visitedNodes.at(-1);
-    while (pathNode !== this.#startNode) {
-      if (pathNode !== this.#targetNode) {
-        pathNode.gridNodeElement.classList.add("path-node");
+  displayPathNodes(visitedNodes) {
+    let currentNode = visitedNodes.at(-1);
+    while (currentNode !== this.#startNode) {
+      if (currentNode !== this.#targetNode) {
+        currentNode.gridNodeElement.classList.add("path-node");
       }
-      pathNode = pathNode.prevNode;
+      currentNode = currentNode.prevNode;
     }
   }
 }
