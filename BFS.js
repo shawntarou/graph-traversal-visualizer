@@ -31,7 +31,7 @@ export function BFS(grid, startNode, targetNode) {
 
       if (
         nextRow < 0 ||
-        nextRow + verticalDirection > gridHeightLimit ||
+        nextRow > gridHeightLimit ||
         nextCol < 0 ||
         nextCol > gridWidthLimit ||
         visited.includes(grid.nodes[nextRow][nextCol])
@@ -39,15 +39,15 @@ export function BFS(grid, startNode, targetNode) {
         continue;
       }
 
-      let newNode = grid.nodes[nextRow][nextCol];
-      newNode.prevNode = front;
-      queue.push(newNode);
-      visited.push(newNode);
+      let nextNode = grid.nodes[nextRow][nextCol];
+      nextNode.prevNode = front;
+      queue.push(nextNode);
+      visited.push(nextNode);
 
       // debug
       // console.log(`added (${front.position}) --> (${newNode.position})`);
 
-      if (newNode.position === targetNode.position) {
+      if (nextNode.position === targetNode.position) {
         return visited;
       }
     }

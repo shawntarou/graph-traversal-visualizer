@@ -1,5 +1,6 @@
 import { GridNode } from "./GridNode.js";
 import { BFS } from "./BFS.js";
+import { DFS, DFSTraversal } from "./DFS.js";
 
 export class Grid {
   #height;
@@ -7,10 +8,10 @@ export class Grid {
   #nodes;
   #startNode;
   #targetNode;
-  #container;
+  #containerElement;
 
   constructor(height = 20, width = 40) {
-    this.#container = document.querySelector("#grid-container");
+    this.#containerElement = document.querySelector("#grid-container");
     this.#height = 20;
     this.#width = 40;
     this.#startNode = null;
@@ -34,7 +35,7 @@ export class Grid {
     for (let row = 0; row < this.#height; ++row) {
       const gridRow = document.createElement("div");
       gridRow.classList.add("grid-row");
-      this.#container.appendChild(gridRow);
+      this.#containerElement.appendChild(gridRow);
 
       let newGridRow = [];
       for (let col = 0; col < this.#width; ++col) {
@@ -63,6 +64,12 @@ export class Grid {
 
   doBFS() {
     let visitedNodes = BFS(this, this.#startNode, this.#targetNode);
+    this.displayVisitedNodes(visitedNodes);
+    this.displayPathNodes(visitedNodes);
+  }
+
+  doDFS() {
+    let visitedNodes = DFSTraversal(this, this.#startNode, this.#targetNode);
     this.displayVisitedNodes(visitedNodes);
     this.displayPathNodes(visitedNodes);
   }
