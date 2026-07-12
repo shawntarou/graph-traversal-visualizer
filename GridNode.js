@@ -1,13 +1,19 @@
 export class GridNode {
   #prevNode;
+  #gridNodeElement;
 
   constructor(position, isStart, isTarget, weight = 1.0) {
     this.position = position;
     this.isStart = isStart;
     this.isTarget = isTarget;
-    this.gridNodeElement = this.createGridNodeElement();
     this.weight = weight;
+
+    this.#gridNodeElement = this.createGridNodeElement();
     this.#prevNode = null;
+  }
+
+  get gridNodeElement() {
+    return this.#gridNodeElement;
   }
 
   get prevNode() {

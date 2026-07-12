@@ -1,6 +1,7 @@
 import { GridNode } from "./GridNode.js";
-import { BFS } from "./BFS.js";
-import { DFS, DFSTraversal } from "./DFS.js";
+import { BFS } from "./algorithms/BFS.js";
+import { DFS, DFSTraversal } from "./algorithms/DFS.js";
+import { dijkstra } from "./algorithms/dijkstra.js";
 
 export class Grid {
   #height;
@@ -47,7 +48,7 @@ export class Grid {
           this.#startNode = newGridNode;
         }
         // hardcoding target
-        else if (row === 10 && col == 20) {
+        else if (row === 8 && col == 20) {
           newGridNode = new GridNode([row, col], false, true);
           this.#targetNode = newGridNode;
         } else {
@@ -70,6 +71,12 @@ export class Grid {
 
   doDFS() {
     let visitedNodes = DFSTraversal(this, this.#startNode, this.#targetNode);
+    this.displayVisitedNodes(visitedNodes);
+    this.displayPathNodes(visitedNodes);
+  }
+
+  doDijkstra() {
+    let visitedNodes = dijkstra(this, this.#startNode, this.#targetNode);
     this.displayVisitedNodes(visitedNodes);
     this.displayPathNodes(visitedNodes);
   }

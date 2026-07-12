@@ -3,7 +3,6 @@ export function DFS(grid, currentNode, targetNode, visited) {
 
   // base case
   if (currentNode === targetNode) {
-    // check this
     return true;
   }
 
