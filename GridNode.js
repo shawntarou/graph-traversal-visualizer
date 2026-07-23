@@ -27,6 +27,9 @@ export class GridNode {
   createGridNodeElement() {
     let newGridNodeElement = document.createElement("div");
     newGridNodeElement.classList.add("grid-node");
+    if (this.weight > 1.0) {
+      newGridNodeElement.classList.add("weight-node");
+    }
     if (this.isStart === true) {
       newGridNodeElement.classList.add("start-node");
     }

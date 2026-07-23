@@ -1,6 +1,6 @@
 export function dijkstra(grid, startNode, targetNode) {
   let visited = [];
-  // emulate a priority queue by using an array and sorting after every time
+  // emulate a priority queue by using an array and sorting after every insertion
   let pq = [];
   let dist = new Map();
 

@@ -1,3 +1,11 @@
+:root {
+  --sky-blue: #79d7fd;
+  --ocean-blue: #00bbfa;
+  --midnight-navy: #001736;
+  --deep-navy: #00183e;
+  --gold: #ffc54a;
+}
+
 * {
   box-sizing: border-box;
   /* border: 1px solid red ; */
@@ -5,7 +13,6 @@
 
 html,
 body {
-  overflow-x: hidden;
   margin: 0;
 }
 
@@ -18,10 +25,10 @@ html {
   justify-content: center;
 }
 
-#grid-container {
+/* #grid-container {
   display: flex;
   flex-direction: column;
-}
+} */
 
 .grid-row {
   display: flex;
@@ -29,13 +36,13 @@ html {
 
 .grid-node {
   margin: 0.5px;
-  width: 50px;
-  height: 50px;
+  min-width: 30px;
+  min-height: 30px;
   border: 1px solid rgb(69, 144, 255);
 }
 
 .start-node {
-  background: green;
+  background-color: green;
 }
 
 .target-node {
@@ -43,22 +50,85 @@ html {
 }
 
 .visited-node {
-  background-color: blue;
-  animation-name: toVisited;
-  animation-duration: 3s;
-  /* transition: transform 3s ease-in;
-  transform: scale(1); */
+  position: relative;
 }
 
-.path-node {
+.visited-node::before {
+  position: absolute;
+  content: "";
+  width: 28px;
+  height: 28px;
+  background-color: blue;
+  transform: scale(0);
+}
+
+.visited-node.active::before {
+  animation-name: visitedAnimation;
+  animation-duration: 1s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}
+
+.visited-node.path-node {
+  background-color: blue;
+}
+
+.path-node::before {
+  position: absolute;
+  content: "";
+  transform: scale(0);
+  width: 28px;
+  height: 28px;
   background-color: yellow;
 }
 
-@keyframes toVisited {
-  from {
-    background-color: transparent;
+.path-node.active::before {
+  animation-name: pathAnimation;
+  animation-duration: 1s;
+  animation-timing-function: ease;
+  animation-fill-mode: forwards;
+}
+
+.weight-node {
+  background-color: orange;
+}
+
+.path-node {
+  position: relative;
+}
+
+@keyframes visitedAnimation {
+  0% {
+    transform: scale(0);
+    border-radius: 30px;
+    background-color: white;
   }
-  to {
+  80% {
+    transform: scale(1.5);
+    border-radius: 5px;
+    background-color: lightcoral;
+  }
+  100% {
+    transform: scale(1);
+    border-radius: 0px;
     background-color: blue;
+  }
+}
+
+@keyframes pathAnimation {
+  0% {
+    transform: scale(0);
+    border-radius: 30px;
+    background-color: rgb(255, 132, 0);
+  }
+  80% {
+    transform: scale(1.5);
+    border-radius: 5px;
+    background-color: rgb(255, 196, 0);
+  }
+  100% {
+    transform: scale(1);
+    border-radius: 0px;
+    background-color: yellow;
   }
 }
