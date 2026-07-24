@@ -9,10 +9,10 @@ export class Grid {
   #nodes;
   #startNode;
   #targetNode;
-  #containerElement;
+  containerElement;
 
   constructor(height = 20, width = 40) {
-    this.#containerElement = document.querySelector("#grid-container");
+    this.containerElement = document.querySelector("#grid-container");
     this.#height = 20;
     this.#width = 40;
     this.#startNode = null;
@@ -36,7 +36,7 @@ export class Grid {
     for (let row = 0; row < this.#height; ++row) {
       const gridRow = document.createElement("div");
       gridRow.classList.add("grid-row");
-      this.#containerElement.appendChild(gridRow);
+      this.containerElement.appendChild(gridRow);
 
       let newGridRow = [];
       for (let col = 0; col < this.#width; ++col) {
@@ -69,6 +69,10 @@ export class Grid {
       // console.log(newGridRow);
       this.#nodes.push(newGridRow);
     }
+  }
+
+  clear() {
+    this.containerElement.replaceChildren();
   }
 
   doBFS() {
