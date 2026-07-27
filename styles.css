@@ -89,6 +89,10 @@ html {
   animation-fill-mode: forwards;
 }
 
+.wall-node {
+  background-color: purple;
+}
+
 .weight-node {
   background-color: orange;
 }

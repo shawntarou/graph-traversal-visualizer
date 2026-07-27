@@ -26,7 +26,8 @@ export function DFS(grid, currentNode, targetNode, visited) {
       nextRow > gridHeightLimit ||
       nextCol < 0 ||
       nextCol > gridWidthLimit ||
-      visited.includes(grid.nodes[nextRow][nextCol])
+      visited.includes(grid.nodes[nextRow][nextCol]) ||
+      grid.nodes[nextRow][nextCol].isWall
     ) {
       continue;
     }

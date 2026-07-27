@@ -8,6 +8,9 @@ import { Grid } from "./Grid.js";
 // this.graph.doBFS();
 
 class GraphTraversalVisualizer {
+  start;
+  target;
+
   constructor() {
     this.graph = new Grid();
     this.resetButton = document.querySelector(".reset-button");
@@ -16,6 +19,7 @@ class GraphTraversalVisualizer {
 
     this.resetButton.addEventListener("click", () => this.resetGraph());
     this.runButton.addEventListener("click", () => this.runAlgo());
+    this.algoSelector.addEventListener("change", () => this.resetGraph());
 
     this.graph.drawGrid();
   }

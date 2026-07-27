@@ -44,23 +44,33 @@ export class Grid {
 
         // hardcoding start
         if (row === 10 && col === 8) {
-          newGridNode = new GridNode([row, col], true, false);
+          newGridNode = new GridNode([row, col], true);
           this.#startNode = newGridNode;
+        }
+        // hardcode walls
+        else if (row === 11 && col === 9) {
+          newGridNode = new GridNode([row, col], false, false, true);
+        } else if (row === 10 && col === 9) {
+          newGridNode = new GridNode([row, col], false, false, true);
+        } else if (row === 9 && col === 9) {
+          newGridNode = new GridNode([row, col], false, false, true);
+        } else if (row === 9 && col === 8) {
+          newGridNode = new GridNode([row, col], false, false, true);
         }
         // hardcoding weights
         // else if (row === 10 && col === 9) {
-        //   newGridNode = new GridNode([row, col], true, false, 3.0);
+        //   newGridNode = new GridNode([row, col], false, false, false, 3.0);
         // } else if (row === 11 && col === 9) {
-        //   newGridNode = new GridNode([row, col], true, false, 3.0);
+        //   newGridNode = new GridNode([row, col], false, false, false, 3.0);
         // } else if (row === 10 && col === 15) {
-        //   newGridNode = new GridNode([row, col], true, false, 3.0);
+        //   newGridNode = new GridNode([row, col], false, false, false 3.0);
         // }
         // hardcoding target
         else if (row === 10 && col == 22) {
           newGridNode = new GridNode([row, col], false, true);
           this.#targetNode = newGridNode;
         } else {
-          newGridNode = new GridNode([row, col], false, false);
+          newGridNode = new GridNode([row, col]);
         }
 
         newGridRow.push(newGridNode);

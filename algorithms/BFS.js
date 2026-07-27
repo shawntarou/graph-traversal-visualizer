@@ -34,7 +34,8 @@ export function BFS(grid, startNode, targetNode) {
         nextRow > gridHeightLimit ||
         nextCol < 0 ||
         nextCol > gridWidthLimit ||
-        visited.includes(grid.nodes[nextRow][nextCol])
+        visited.includes(grid.nodes[nextRow][nextCol]) ||
+        grid.nodes[nextRow][nextCol].isWall
       ) {
         continue;
       }

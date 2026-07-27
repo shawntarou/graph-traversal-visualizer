@@ -2,10 +2,17 @@ export class GridNode {
   #prevNode;
   #gridNodeElement;
 
-  constructor(position, isStart, isTarget, weight = 1.0) {
+  constructor(
+    position,
+    isStart = false,
+    isTarget = false,
+    isWall = false,
+    weight = 1.0,
+  ) {
     this.position = position;
     this.isStart = isStart;
     this.isTarget = isTarget;
+    this.isWall = isWall;
     this.weight = weight;
 
     this.#gridNodeElement = this.createGridNodeElement();
@@ -30,11 +37,14 @@ export class GridNode {
     if (this.weight > 1.0) {
       newGridNodeElement.classList.add("weight-node");
     }
-    if (this.isStart === true) {
+    if (this.isStart) {
       newGridNodeElement.classList.add("start-node");
     }
-    if (this.isTarget === true) {
+    if (this.isTarget) {
       newGridNodeElement.classList.add("target-node");
+    }
+    if (this.isWall) {
+      newGridNodeElement.classList.add("wall-node");
     }
 
     return newGridNodeElement;
