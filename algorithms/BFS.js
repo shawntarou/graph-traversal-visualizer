@@ -53,4 +53,6 @@ export function BFS(grid, startNode, targetNode) {
       }
     }
   }
+
+  return visited;
 }

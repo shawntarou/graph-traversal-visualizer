@@ -11,13 +11,15 @@ export class Grid {
   #targetNode;
   containerElement;
 
-  constructor(height = 20, width = 40) {
+  constructor(height = 20, width = 40, walls = []) {
     this.containerElement = document.querySelector("#grid-container");
     this.#height = 20;
     this.#width = 40;
     this.#startNode = null;
     this.#targetNode = null;
     this.#nodes = [];
+
+    this.walls = walls;
   }
 
   get height() {
@@ -42,28 +44,42 @@ export class Grid {
       for (let col = 0; col < this.#width; ++col) {
         let newGridNode = null;
 
-        // hardcoding start
+        if (this.isWall([row, col])) {
+          newGridNode = new GridNode([row, col], false, false, true);
+
+          newGridRow.push(newGridNode);
+          gridRow.appendChild(newGridNode.gridNodeElement);
+          continue;
+        }
+
         if (row === 10 && col === 8) {
+          // hardcoding start
           newGridNode = new GridNode([row, col], true);
           this.#startNode = newGridNode;
         }
         // hardcode walls
-        else if (row === 11 && col === 9) {
-          newGridNode = new GridNode([row, col], false, false, true);
-        } else if (row === 10 && col === 9) {
-          newGridNode = new GridNode([row, col], false, false, true);
-        } else if (row === 9 && col === 9) {
-          newGridNode = new GridNode([row, col], false, false, true);
-        } else if (row === 9 && col === 8) {
-          newGridNode = new GridNode([row, col], false, false, true);
-        }
+        // else if (row === 11 && col === 9) {
+        //   newGridNode = new GridNode([row, col], false, false, true);
+        // } else if (row === 10 && col === 9) {
+        //   newGridNode = new GridNode([row, col], false, false, true);
+        // } else if (row === 9 && col === 9) {
+        //   newGridNode = new GridNode([row, col], false, false, true);
+        // } else if (row === 9 && col === 8) {
+        //   newGridNode = new GridNode([row, col], false, false, true);
+        // }
         // hardcoding weights
         // else if (row === 10 && col === 9) {
         //   newGridNode = new GridNode([row, col], false, false, false, 3.0);
-        // } else if (row === 11 && col === 9) {
+        // }
+        // else if (row === 11 && col === 9) {
         //   newGridNode = new GridNode([row, col], false, false, false, 3.0);
-        // } else if (row === 10 && col === 15) {
-        //   newGridNode = new GridNode([row, col], false, false, false 3.0);
+        // }
+        // else if (row === 10 && col === 15) {
+        //   newGridNode = new GridNode([row, col], false, false, false, 3.0);
+        // } else if (row === 11 && col === 15) {
+        //   newGridNode = new GridNode([row, col], false, false, false, 3.0);
+        // } else if (row === 12 && col === 15) {
+        //   newGridNode = new GridNode([row, col], false, false, false, 3.0);
         // }
         // hardcoding target
         else if (row === 10 && col == 22) {
@@ -83,6 +99,7 @@ export class Grid {
 
   clear() {
     this.containerElement.replaceChildren();
+    this.#nodes = [];
   }
 
   doBFS() {
@@ -102,19 +119,63 @@ export class Grid {
 
   visualizeAlgo(visitedNodes) {
     this.displayVisitedNodes(visitedNodes);
-    let pathNodes = this.orderPathNodes(visitedNodes);
-    setTimeout(
-      () => {
-        this.displayPathNodes(pathNodes);
-      },
-      10 * (visitedNodes.length - 2),
-    );
+
+    if (visitedNodes.at(-1) == this.#targetNode) {
+      let pathNodes = this.orderPathNodes(visitedNodes);
+      setTimeout(
+        () => {
+          this.displayPathNodes(pathNodes);
+        },
+        100 * (visitedNodes.length - 2),
+      );
+    }
+  }
+
+  setWall(nodeElement) {
+    // need to rework this entire function
+    const node = this.findNodeFromElement(nodeElement);
+    if (node === this.#startNode || node === this.#targetNode) {
+      alert("NO!!!!"); // change this
+    } else if (node.isWall) {
+      node.becomeNotWall();
+
+      const index = this.walls.findIndex((subArr) =>
+        subArr.every((posValue, i) => posValue === node.position[i]),
+      );
+      this.walls.splice(index, 1);
+    } else {
+      node.becomeWall();
+      this.walls.push(node.position);
+    }
+  }
+
+  isWall([row, col]) {
+    return this.walls.some((subArr) => subArr[0] === row && subArr[1] === col);
+  }
+
+  findNodeFromElement(nodeElement) {
+    for (let i = 0; i < this.#nodes.length; ++i) {
+      for (let j = 0; j < this.#nodes[i].length; ++j) {
+        const currentNode = this.#nodes[i][j];
+        const currentNodeElement = currentNode.gridNodeElement;
+
+        if (currentNodeElement === nodeElement) {
+          return currentNode;
+        }
+      }
+    }
+
+    return null;
   }
 
   displayVisitedNodes(visitedNodes) {
-    for (let i = 1; i < visitedNodes.length - 1; ++i) {
-      const delay = 10 * i;
+    for (let i = 1; i < visitedNodes.length; ++i) {
+      const delay = 100 * i;
       const currentNode = visitedNodes[i];
+
+      if (currentNode === this.#startNode || currentNode === this.#targetNode) {
+        continue;
+      }
 
       currentNode.gridNodeElement.classList.add("visited-node");
 

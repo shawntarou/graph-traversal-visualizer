@@ -49,4 +49,14 @@ export class GridNode {
 
     return newGridNodeElement;
   }
+
+  becomeWall() {
+    this.isWall = true;
+    this.gridNodeElement.classList.add("wall-node");
+  }
+
+  becomeNotWall() {
+    this.isWall = false;
+    this.gridNodeElement.classList.remove("wall-node");
+  }
 }
