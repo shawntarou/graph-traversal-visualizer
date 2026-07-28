@@ -26,7 +26,6 @@ class GraphTraversalVisualizer {
     this.clearButton.addEventListener("click", () => this.clearGraph());
 
     this.initGraphEvents();
-    // future to self, maybe just implement what you did in angular project and make it so clicking the container works with this?
   }
 
   resetGraph() {

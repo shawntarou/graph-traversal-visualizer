@@ -10,6 +10,7 @@ export class Grid {
   #startNode;
   #targetNode;
   containerElement;
+  #timeoutRefs = [];
 
   constructor(height = 20, width = 40, walls = []) {
     this.containerElement = document.querySelector("#grid-container");
@@ -100,6 +101,14 @@ export class Grid {
   clear() {
     this.containerElement.replaceChildren();
     this.#nodes = [];
+    this.clearTimeouts();
+  }
+
+  clearTimeouts() {
+    for (const id of this.#timeoutRefs) {
+      clearTimeout(id);
+    }
+    this.#timeoutRefs = [];
   }
 
   doBFS() {
@@ -120,15 +129,72 @@ export class Grid {
   visualizeAlgo(visitedNodes) {
     this.displayVisitedNodes(visitedNodes);
 
-    if (visitedNodes.at(-1) == this.#targetNode) {
-      let pathNodes = this.orderPathNodes(visitedNodes);
-      setTimeout(
-        () => {
+    let pathNodes = this.orderPathNodes(visitedNodes);
+    const id = setTimeout(
+      () => {
+        if (visitedNodes.at(-1) === this.#targetNode) {
           this.displayPathNodes(pathNodes);
-        },
-        100 * (visitedNodes.length - 2),
-      );
+        } else {
+          alert("Target not found!");
+        }
+      },
+      10 * visitedNodes.length + 1000,
+    );
+
+    this.#timeoutRefs.push(id);
+  }
+
+  displayVisitedNodes(visitedNodes) {
+    for (let i = 1; i < visitedNodes.length; ++i) {
+      const delay = 10 * i;
+      const currentNode = visitedNodes[i];
+
+      if (
+        currentNode === this.#startNode ||
+        currentNode === this.#targetNode ||
+        currentNode.gridNodeElement.classList.contains("visited-node")
+      ) {
+        continue;
+      }
+
+      currentNode.gridNodeElement.classList.add("visited-node");
+
+      if (currentNode.weight > 1.0) {
+        continue;
+      }
+
+      const id = setTimeout(() => {
+        currentNode.gridNodeElement.classList.add("active");
+      }, delay);
+
+      this.#timeoutRefs.push(id);
     }
+  }
+
+  displayPathNodes(pathNodes) {
+    for (let i = 0; i < pathNodes.length; ++i) {
+      const delay = 100 * i;
+      let currentNode = pathNodes[i];
+      currentNode.gridNodeElement.classList.remove("active");
+      currentNode.gridNodeElement.classList.add("path-node");
+
+      const id = setTimeout(() => {
+        currentNode.gridNodeElement.classList.add("active");
+      }, delay);
+    }
+  }
+
+  orderPathNodes(visitedNodes) {
+    let pathNodes = [];
+    let currentNode = visitedNodes.at(-1);
+    while (currentNode !== this.#startNode) {
+      if (currentNode !== this.#targetNode) {
+        pathNodes.push(currentNode);
+      }
+      currentNode = currentNode.prevNode;
+    }
+
+    return pathNodes.reverse();
   }
 
   setWall(nodeElement) {
@@ -166,52 +232,5 @@ export class Grid {
     }
 
     return null;
-  }
-
-  displayVisitedNodes(visitedNodes) {
-    for (let i = 1; i < visitedNodes.length; ++i) {
-      const delay = 100 * i;
-      const currentNode = visitedNodes[i];
-
-      if (currentNode === this.#startNode || currentNode === this.#targetNode) {
-        continue;
-      }
-
-      currentNode.gridNodeElement.classList.add("visited-node");
-
-      if (currentNode.weight > 1.0) {
-        continue;
-      }
-
-      setTimeout(() => {
-        currentNode.gridNodeElement.classList.add("active");
-      }, delay);
-    }
-  }
-
-  displayPathNodes(pathNodes) {
-    for (let i = 0; i < pathNodes.length; ++i) {
-      const delay = 100 * i;
-      let currentNode = pathNodes[i];
-      currentNode.gridNodeElement.classList.remove("active");
-      currentNode.gridNodeElement.classList.add("path-node");
-
-      setTimeout(() => {
-        currentNode.gridNodeElement.classList.add("active");
-      }, delay);
-    }
-  }
-
-  orderPathNodes(visitedNodes) {
-    let pathNodes = [];
-    let currentNode = visitedNodes.at(-1);
-    while (currentNode !== this.#startNode) {
-      if (currentNode !== this.#targetNode) {
-        pathNodes.push(currentNode);
-      }
-      currentNode = currentNode.prevNode;
-    }
-
-    return pathNodes.reverse();
   }
 }
