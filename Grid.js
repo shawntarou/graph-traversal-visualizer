@@ -71,11 +71,9 @@ export class Grid {
         // hardcoding weights
         // else if (row === 10 && col === 9) {
         //   newGridNode = new GridNode([row, col], false, false, false, 3.0);
-        // }
-        // else if (row === 11 && col === 9) {
+        // } else if (row === 11 && col === 9) {
         //   newGridNode = new GridNode([row, col], false, false, false, 3.0);
-        // }
-        // else if (row === 10 && col === 15) {
+        // } else if (row === 10 && col === 15) {
         //   newGridNode = new GridNode([row, col], false, false, false, 3.0);
         // } else if (row === 11 && col === 15) {
         //   newGridNode = new GridNode([row, col], false, false, false, 3.0);
@@ -127,6 +125,7 @@ export class Grid {
   }
 
   visualizeAlgo(visitedNodes) {
+    visitedNodes = this.processVisitedNodes(visitedNodes);
     this.displayVisitedNodes(visitedNodes);
 
     let pathNodes = this.orderPathNodes(visitedNodes);
@@ -149,17 +148,7 @@ export class Grid {
       const delay = 10 * i;
       const currentNode = visitedNodes[i];
 
-      if (
-        currentNode === this.#startNode ||
-        currentNode === this.#targetNode ||
-        currentNode.gridNodeElement.classList.contains("visited-node")
-      ) {
-        continue;
-      }
-
-      currentNode.gridNodeElement.classList.add("visited-node");
-
-      if (currentNode.weight > 1.0) {
+      if (currentNode.weight > 1.0 || currentNode === this.#targetNode) {
         continue;
       }
 
@@ -169,6 +158,19 @@ export class Grid {
 
       this.#timeoutRefs.push(id);
     }
+  }
+
+  processVisitedNodes(visitedNodes) {
+    let processedVisitedNodes = [];
+    for (const node of visitedNodes) {
+      if (node.gridNodeElement.classList.contains("visited-node")) {
+        continue;
+      }
+      node.gridNodeElement.classList.add("visited-node");
+      processedVisitedNodes.push(node);
+    }
+
+    return processedVisitedNodes;
   }
 
   displayPathNodes(pathNodes) {
