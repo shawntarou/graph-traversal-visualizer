@@ -1,15 +1,10 @@
 import { Grid } from "./Grid.js";
 
-// let grid = new Grid();
-// grid.drawGrid();
-
-// grid.doDFS();
-// grid.doDijkstra();
-// this.graph.doBFS();
-
 class GraphTraversalVisualizer {
   start;
   target;
+  #leftClickDown = false;
+  #rightClickDown = false;
 
   constructor() {
     this.graph = new Grid();
@@ -47,12 +42,65 @@ class GraphTraversalVisualizer {
 
   initGraphEvents() {
     this.nodeElements = document.querySelectorAll(".grid-node");
+    let gridContainer = document.querySelector("#grid-container");
 
-    for (let i = 0; i < this.nodeElements.length; ++i) {
-      this.nodeElements[i].addEventListener("click", () =>
-        this.addWall(this.nodeElements[i]),
-      );
-    }
+    gridContainer.addEventListener("mousedown", (event) => {
+      event.preventDefault();
+      if (
+        !event.target.classList.contains("grid-node") ||
+        (this.#leftClickDown && this.#rightClickDown)
+      ) {
+        return;
+      }
+
+      if (event.button == 0) {
+        console.log("MOUSEDOWN");
+        this.#leftClickDown = true;
+
+        if (!event.target.classList.contains("wall-node")) {
+          this.addWall(event.target);
+        }
+      } else if (event.button == 2) {
+        console.log("RIGHTCLICK");
+        this.#rightClickDown = true;
+        this.removeWall(event.target);
+      }
+    });
+
+    gridContainer.addEventListener("contextmenu", (event) => {
+      event.preventDefault();
+    });
+
+    gridContainer.addEventListener("mousemove", (event) => {
+      event.preventDefault();
+      if (
+        !event.target.classList.contains("grid-node") ||
+        (this.#leftClickDown && this.#rightClickDown)
+      ) {
+        console.log("BOTH HELD DRAGGING");
+        return;
+      }
+
+      if (
+        this.#leftClickDown &&
+        !event.target.classList.contains("wall-node")
+      ) {
+        console.log("DRAGGING LEFT");
+        this.addWall(event.target);
+      } else if (
+        this.#rightClickDown &&
+        event.target.classList.contains("wall-node")
+      ) {
+        console.log("DRAGGING RIGHT");
+        this.removeWall(event.target);
+      }
+    });
+
+    window.addEventListener("mouseup", (event) => {
+      console.log("MOUSEUP");
+      this.#leftClickDown = false;
+      this.#rightClickDown = false;
+    });
   }
 
   runAlgo() {
@@ -76,7 +124,11 @@ class GraphTraversalVisualizer {
   }
 
   addWall(nodeElement) {
-    this.graph.setWall(nodeElement);
+    this.graph.addWall(nodeElement);
+  }
+
+  removeWall(nodeElement) {
+    this.graph.removeWall(nodeElement);
   }
 }
 

@@ -199,22 +199,39 @@ export class Grid {
     return pathNodes.reverse();
   }
 
-  setWall(nodeElement) {
+  addWall(nodeElement) {
     // need to rework this entire function
     const node = this.findNodeFromElement(nodeElement);
-    if (node === this.#startNode || node === this.#targetNode) {
-      alert("NO!!!!"); // change this
-    } else if (node.isWall) {
-      node.becomeNotWall();
+    // if (node === this.#startNode || node === this.#targetNode) {
+    //   alert("NO!!!!"); // change this
+    // } else if (node.isWall) {
+    //   node.becomeNotWall();
 
-      const index = this.walls.findIndex((subArr) =>
-        subArr.every((posValue, i) => posValue === node.position[i]),
-      );
-      this.walls.splice(index, 1);
-    } else {
-      node.becomeWall();
-      this.walls.push(node.position);
+    //   const index = this.walls.findIndex((subArr) =>
+    //     subArr.every((posValue, i) => posValue === node.position[i]),
+    //   );
+    //   this.walls.splice(index, 1);
+    // } else {
+    //   node.becomeWall();
+    //   this.walls.push(node.position);
+    // }
+    if (node === this.#startNode || node === this.#targetNode || node.isWall) {
+      return;
     }
+    node.becomeWall();
+    this.walls.push(node.position);
+  }
+
+  removeWall(nodeElement) {
+    const node = this.findNodeFromElement(nodeElement);
+    if (!node.isWall) {
+      return;
+    }
+    node.becomeNotWall();
+    const index = this.walls.findIndex((subArr) =>
+      subArr.every((posValue, i) => posValue === node.position[i]),
+    );
+    this.walls.splice(index, 1);
   }
 
   isWall([row, col]) {
