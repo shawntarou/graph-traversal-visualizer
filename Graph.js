@@ -1,15 +1,15 @@
-import { GridNode } from "./GridNode.js";
+import { GraphNode } from "./GraphNode.js";
 import { BFS } from "./algorithms/BFS.js";
 import { DFS, DFSTraversal } from "./algorithms/DFS.js";
 import { dijkstra } from "./algorithms/dijkstra.js";
 
-export class Grid {
-  containerElement = document.querySelector("#grid-container");
+export class Graph {
+  #containerElement = document.querySelector("#graph-container");
   #height;
   #width;
+  #startNode;
+  #targetNode;
   #nodes = [];
-  #startNode = null;
-  #targetNode = null;
   #timeoutRefs = [];
   #walls = [];
 
@@ -30,68 +30,58 @@ export class Grid {
     return this.#nodes;
   }
 
-  drawGrid() {
+  drawGraph() {
     for (let row = 0; row < this.#height; ++row) {
-      const gridRow = document.createElement("div");
-      gridRow.classList.add("grid-row");
-      this.containerElement.appendChild(gridRow);
+      const graphRow = document.createElement("div");
+      graphRow.classList.add("graph-row");
+      this.#containerElement.appendChild(graphRow);
 
-      let newGridRow = [];
+      let newGraphRow = [];
       for (let col = 0; col < this.#width; ++col) {
-        let newGridNode = null;
+        let newGraphNode = null;
 
         if (this.isWall([row, col])) {
-          newGridNode = new GridNode([row, col], false, false, true);
+          newGraphNode = new GraphNode([row, col], false, false, true);
 
-          newGridRow.push(newGridNode);
-          gridRow.appendChild(newGridNode.gridNodeElement);
+          newGraphRow.push(newGraphNode);
+          graphRow.appendChild(newGraphNode.graphNodeElement);
           continue;
         }
 
         if (row === 10 && col === 8) {
           // hardcoding start
-          newGridNode = new GridNode([row, col], true);
-          this.#startNode = newGridNode;
+          newGraphNode = new GraphNode([row, col], true);
+          this.#startNode = newGraphNode;
         }
-        // hardcode walls
-        // else if (row === 11 && col === 9) {
-        //   newGridNode = new GridNode([row, col], false, false, true);
-        // } else if (row === 10 && col === 9) {
-        //   newGridNode = new GridNode([row, col], false, false, true);
-        // } else if (row === 9 && col === 9) {
-        //   newGridNode = new GridNode([row, col], false, false, true);
-        // } else if (row === 9 && col === 8) {
-        //   newGridNode = new GridNode([row, col], false, false, true);
-        // }
         // hardcoding weights
         // else if (row === 10 && col === 9) {
-        //   newGridNode = new GridNode([row, col], false, false, false, 3.0);
+        //   newGraphNode = new GraphNode([row, col], false, false, false, 3.0);
         // } else if (row === 11 && col === 9) {
-        //   newGridNode = new GridNode([row, col], false, false, false, 3.0);
+        //   newGraphNode = new GraphNode([row, col], false, false, false, 3.0);
         // } else if (row === 10 && col === 15) {
-        //   newGridNode = new GridNode([row, col], false, false, false, 3.0);
+        //   newGraphNode = new GraphNode([row, col], false, false, false, 3.0);
         // } else if (row === 11 && col === 15) {
-        //   newGridNode = new GridNode([row, col], false, false, false, 3.0);
+        //   newGraphNode = new GraphNode([row, col], false, false, false, 3.0);
         // } else if (row === 12 && col === 15) {
-        //   newGridNode = new GridNode([row, col], false, false, false, 3.0);
+        //   newGraphNode = new GraphNode([row, col], false, false, false, 3.0);
         // }
         // hardcoding target
         else if (row === 10 && col == 22) {
-          newGridNode = new GridNode([row, col], false, true);
-          this.#targetNode = newGridNode;
+          newGraphNode = new GraphNode([row, col], false, true);
+          this.#targetNode = newGraphNode;
         } else {
-          newGridNode = new GridNode([row, col]);
+          newGraphNode = new GraphNode([row, col]);
         }
 
-        newGridRow.push(newGridNode);
-        gridRow.appendChild(newGridNode.gridNodeElement);
+        newGraphRow.push(newGraphNode);
+        graphRow.appendChild(newGraphNode.graphNodeElement);
       }
-      this.#nodes.push(newGridRow);
+      this.#nodes.push(newGraphRow);
     }
   }
 
   clear() {
-    this.containerElement.replaceChildren();
+    this.#containerElement.replaceChildren();
     this.#nodes = [];
     this.clearTimeouts();
   }
@@ -147,7 +137,7 @@ export class Grid {
       }
 
       const id = setTimeout(() => {
-        currentNode.gridNodeElement.classList.add("active");
+        currentNode.graphNodeElement.classList.add("active");
       }, delay);
 
       this.#timeoutRefs.push(id);
@@ -157,10 +147,10 @@ export class Grid {
   processVisitedNodes(visitedNodes) {
     let processedVisitedNodes = [];
     for (const node of visitedNodes) {
-      if (node.gridNodeElement.classList.contains("visited-node")) {
+      if (node.graphNodeElement.classList.contains("visited-node")) {
         continue;
       }
-      node.gridNodeElement.classList.add("visited-node");
+      node.graphNodeElement.classList.add("visited-node");
       processedVisitedNodes.push(node);
     }
 
@@ -171,11 +161,11 @@ export class Grid {
     for (let i = 0; i < pathNodes.length; ++i) {
       const delay = 100 * i;
       let currentNode = pathNodes[i];
-      currentNode.gridNodeElement.classList.remove("active");
-      currentNode.gridNodeElement.classList.add("path-node");
+      currentNode.graphNodeElement.classList.remove("active");
+      currentNode.graphNodeElement.classList.add("path-node");
 
       const id = setTimeout(() => {
-        currentNode.gridNodeElement.classList.add("active");
+        currentNode.graphNodeElement.classList.add("active");
       }, delay);
     }
   }
@@ -222,7 +212,7 @@ export class Grid {
     for (let i = 0; i < this.#nodes.length; ++i) {
       for (let j = 0; j < this.#nodes[i].length; ++j) {
         const currentNode = this.#nodes[i][j];
-        const currentNodeElement = currentNode.gridNodeElement;
+        const currentNodeElement = currentNode.graphNodeElement;
 
         if (currentNodeElement === nodeElement) {
           return currentNode;

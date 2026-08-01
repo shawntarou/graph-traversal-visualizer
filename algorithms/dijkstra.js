@@ -1,4 +1,4 @@
-export function dijkstra(grid, startNode, targetNode) {
+export function dijkstra(graph, startNode, targetNode) {
   let visited = [];
   // emulate a priority queue by using an array and sorting after every insertion
   let pq = [];
@@ -25,23 +25,23 @@ export function dijkstra(grid, startNode, targetNode) {
     for (const direction of directions) {
       const verticalDirection = direction[0];
       const horizontalDirection = direction[1];
-      const gridHeightLimit = grid.height - 1;
-      const gridWidthLimit = grid.width - 1;
+      const graphHeightLimit = graph.height - 1;
+      const graphWidthLimit = graph.width - 1;
       const nextRow = front.position[0] + verticalDirection;
       const nextCol = front.position[1] + horizontalDirection;
 
       if (
         nextRow < 0 ||
-        nextRow > gridHeightLimit ||
+        nextRow > graphHeightLimit ||
         nextCol < 0 ||
-        nextCol > gridWidthLimit ||
-        visited.includes(grid.nodes[nextRow][nextCol]) ||
-        grid.nodes[nextRow][nextCol].isWall
+        nextCol > graphWidthLimit ||
+        visited.includes(graph.nodes[nextRow][nextCol]) ||
+        graph.nodes[nextRow][nextCol].isWall
       ) {
         continue;
       }
 
-      let adjNode = grid.nodes[nextRow][nextCol];
+      let adjNode = graph.nodes[nextRow][nextCol];
       dist.set(adjNode.position, Infinity);
       pq.push({ node: adjNode, dist: Infinity });
       sortpq(pq);

@@ -1,4 +1,4 @@
-export function DFS(grid, currentNode, targetNode, visited) {
+export function DFS(graph, currentNode, targetNode, visited) {
   visited.push(currentNode);
 
   // base case
@@ -16,25 +16,25 @@ export function DFS(grid, currentNode, targetNode, visited) {
   for (const direction of directions) {
     const verticalDirection = direction[0];
     const horizontalDirection = direction[1];
-    const gridHeightLimit = grid.height - 1;
-    const gridWidthLimit = grid.width - 1;
+    const graphHeightLimit = graph.height - 1;
+    const graphWidthLimit = graph.width - 1;
     const nextRow = currentNode.position[0] + verticalDirection;
     const nextCol = currentNode.position[1] + horizontalDirection;
 
     if (
       nextRow < 0 ||
-      nextRow > gridHeightLimit ||
+      nextRow > graphHeightLimit ||
       nextCol < 0 ||
-      nextCol > gridWidthLimit ||
-      visited.includes(grid.nodes[nextRow][nextCol]) ||
-      grid.nodes[nextRow][nextCol].isWall
+      nextCol > graphWidthLimit ||
+      visited.includes(graph.nodes[nextRow][nextCol]) ||
+      graph.nodes[nextRow][nextCol].isWall
     ) {
       continue;
     }
 
-    let nextNode = grid.nodes[nextRow][nextCol];
+    let nextNode = graph.nodes[nextRow][nextCol];
     nextNode.prevNode = currentNode;
-    if (DFS(grid, nextNode, targetNode, visited)) {
+    if (DFS(graph, nextNode, targetNode, visited)) {
       return true;
     }
   }
@@ -42,8 +42,8 @@ export function DFS(grid, currentNode, targetNode, visited) {
   return false;
 }
 
-export function DFSTraversal(grid, startNode, targetNode) {
+export function DFSTraversal(graph, startNode, targetNode) {
   let visited = [];
-  DFS(grid, startNode, targetNode, visited);
+  DFS(graph, startNode, targetNode, visited);
   return visited;
 }

@@ -25,16 +25,16 @@ html {
   justify-content: center;
 }
 
-/* #grid-container {
+/* #graph-container {
   display: flex;
   flex-direction: column;
 } */
 
-.grid-row {
+.graph-row {
   display: flex;
 }
 
-.grid-node {
+.graph-node {
   margin: 0.5px;
   min-width: 30px;
   min-height: 30px;
@@ -99,6 +99,10 @@ html {
 
 .path-node {
   position: relative;
+}
+
+.selectable {
+  cursor: pointer;
 }
 
 @keyframes visitedAnimation {

@@ -1,4 +1,4 @@
-import { Grid } from "./Grid.js";
+import { Graph } from "./Graph.js";
 
 class GraphTraversalVisualizer {
   #start;
@@ -8,8 +8,8 @@ class GraphTraversalVisualizer {
   #rightClickDown = false;
 
   constructor() {
-    this.graph = new Grid();
-    this.graph.drawGrid();
+    this.graph = new Graph();
+    this.graph.drawGraph();
 
     this.cacheDOM();
     this.initButtonEvents();
@@ -21,8 +21,9 @@ class GraphTraversalVisualizer {
     this.algoSelector = document.querySelector("#algo-selector");
     this.runButton = document.querySelector(".run-algo-button");
     this.clearButton = document.querySelector(".clear-button");
+    this.addWeightButton = document.querySelector(".add-weight-button");
 
-    this.gridContainer = document.querySelector("#grid-container");
+    this.graphContainer = document.querySelector("#graph-container");
   }
 
   initButtonEvents() {
@@ -30,13 +31,14 @@ class GraphTraversalVisualizer {
     this.algoSelector.addEventListener("change", () => this.clearGraph());
     this.runButton.addEventListener("click", () => this.runAlgo());
     this.clearButton.addEventListener("click", () => this.clearGraph());
+    this.addWeightButton.addEventListener("click", () => this.addWeight());
   }
 
   initGraphEvents() {
-    this.gridContainer.addEventListener("mousedown", (event) => {
+    this.graphContainer.addEventListener("mousedown", (event) => {
       event.preventDefault();
       if (
-        !event.target.classList.contains("grid-node") ||
+        !event.target.classList.contains("graph-node") ||
         (this.#leftClickDown && this.#rightClickDown) ||
         this.#ran
       ) {
@@ -57,14 +59,14 @@ class GraphTraversalVisualizer {
       }
     });
 
-    this.gridContainer.addEventListener("contextmenu", (event) => {
+    this.graphContainer.addEventListener("contextmenu", (event) => {
       event.preventDefault();
     });
 
-    this.gridContainer.addEventListener("mousemove", (event) => {
+    this.graphContainer.addEventListener("mousemove", (event) => {
       event.preventDefault();
       if (
-        !event.target.classList.contains("grid-node") ||
+        !event.target.classList.contains("graph-node") ||
         (this.#leftClickDown && this.#rightClickDown) ||
         this.#ran
       ) {
@@ -96,8 +98,8 @@ class GraphTraversalVisualizer {
 
   resetGraph() {
     this.graph.clear();
-    this.graph = new Grid();
-    this.graph.drawGrid();
+    this.graph = new Graph();
+    this.graph.drawGraph();
     // this.initGraphEvents();
 
     this.#ran = false;
@@ -106,11 +108,20 @@ class GraphTraversalVisualizer {
 
   clearGraph() {
     this.graph.clear();
-    this.graph.drawGrid();
+    this.graph.drawGraph();
     // this.initGraphEvents();
 
     this.#ran = false;
     this.runButton.disabled = false;
+  }
+
+  addWeight() {
+    // ask user what weight
+    // have them select where they want it
+    // maybe display a fake graph, where user can select using their mouse and then change target in real graph?
+    // maybe create a new function in graph.js called drawSelectablegraph?
+    // display weight number in node
+    alert("test");
   }
 
   runAlgo() {

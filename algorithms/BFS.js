@@ -1,4 +1,4 @@
-export function BFS(grid, startNode, targetNode) {
+export function BFS(graph, startNode, targetNode) {
   // might not be necessary
   if (startNode === targetNode) {
     return targetNode;
@@ -24,23 +24,23 @@ export function BFS(grid, startNode, targetNode) {
     for (const direction of directions) {
       const verticalDirection = direction[0];
       const horizontalDirection = direction[1];
-      const gridHeightLimit = grid.height - 1;
-      const gridWidthLimit = grid.width - 1;
+      const graphHeightLimit = graph.height - 1;
+      const graphWidthLimit = graph.width - 1;
       const nextRow = front.position[0] + verticalDirection;
       const nextCol = front.position[1] + horizontalDirection;
 
       if (
         nextRow < 0 ||
-        nextRow > gridHeightLimit ||
+        nextRow > graphHeightLimit ||
         nextCol < 0 ||
-        nextCol > gridWidthLimit ||
-        visited.includes(grid.nodes[nextRow][nextCol]) ||
-        grid.nodes[nextRow][nextCol].isWall
+        nextCol > graphWidthLimit ||
+        visited.includes(graph.nodes[nextRow][nextCol]) ||
+        graph.nodes[nextRow][nextCol].isWall
       ) {
         continue;
       }
 
-      let nextNode = grid.nodes[nextRow][nextCol];
+      let nextNode = graph.nodes[nextRow][nextCol];
       nextNode.prevNode = front;
       queue.push(nextNode);
       visited.push(nextNode);
