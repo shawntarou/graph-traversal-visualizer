@@ -1,8 +1,9 @@
 import { Grid } from "./Grid.js";
 
 class GraphTraversalVisualizer {
-  start;
-  target;
+  #start;
+  #target;
+  #ran = false;
   #leftClickDown = false;
   #rightClickDown = false;
 
@@ -29,6 +30,7 @@ class GraphTraversalVisualizer {
     this.graph.drawGrid();
     this.initGraphEvents();
 
+    this.#ran = false;
     this.runButton.disabled = false;
   }
 
@@ -37,6 +39,7 @@ class GraphTraversalVisualizer {
     this.graph.drawGrid();
     this.initGraphEvents();
 
+    this.#ran = false;
     this.runButton.disabled = false;
   }
 
@@ -48,20 +51,21 @@ class GraphTraversalVisualizer {
       event.preventDefault();
       if (
         !event.target.classList.contains("grid-node") ||
-        (this.#leftClickDown && this.#rightClickDown)
+        (this.#leftClickDown && this.#rightClickDown) ||
+        this.#ran
       ) {
         return;
       }
 
       if (event.button == 0) {
-        console.log("MOUSEDOWN");
+        // console.log("MOUSEDOWN");
         this.#leftClickDown = true;
 
         if (!event.target.classList.contains("wall-node")) {
           this.addWall(event.target);
         }
       } else if (event.button == 2) {
-        console.log("RIGHTCLICK");
+        // console.log("RIGHTCLICK");
         this.#rightClickDown = true;
         this.removeWall(event.target);
       }
@@ -75,9 +79,10 @@ class GraphTraversalVisualizer {
       event.preventDefault();
       if (
         !event.target.classList.contains("grid-node") ||
-        (this.#leftClickDown && this.#rightClickDown)
+        (this.#leftClickDown && this.#rightClickDown) ||
+        this.#ran
       ) {
-        console.log("BOTH HELD DRAGGING");
+        // console.log("BOTH HELD DRAGGING");
         return;
       }
 
@@ -85,19 +90,19 @@ class GraphTraversalVisualizer {
         this.#leftClickDown &&
         !event.target.classList.contains("wall-node")
       ) {
-        console.log("DRAGGING LEFT");
+        // console.log("DRAGGING LEFT");
         this.addWall(event.target);
       } else if (
         this.#rightClickDown &&
         event.target.classList.contains("wall-node")
       ) {
-        console.log("DRAGGING RIGHT");
+        // console.log("DRAGGING RIGHT");
         this.removeWall(event.target);
       }
     });
 
     window.addEventListener("mouseup", (event) => {
-      console.log("MOUSEUP");
+      // console.log("MOUSEUP");
       this.#leftClickDown = false;
       this.#rightClickDown = false;
     });
@@ -105,6 +110,7 @@ class GraphTraversalVisualizer {
 
   runAlgo() {
     this.runButton.disabled = true;
+    this.#ran = true;
 
     const algoChoice = this.algoSelector.value;
 
