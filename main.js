@@ -11,43 +11,29 @@ class GraphTraversalVisualizer {
     this.graph = new Grid();
     this.graph.drawGrid();
 
+    this.cacheDOM();
+    this.initButtonEvents();
+    this.initGraphEvents();
+  }
+
+  cacheDOM() {
     this.resetButton = document.querySelector(".reset-button");
     this.algoSelector = document.querySelector("#algo-selector");
     this.runButton = document.querySelector(".run-algo-button");
     this.clearButton = document.querySelector(".clear-button");
 
+    this.gridContainer = document.querySelector("#grid-container");
+  }
+
+  initButtonEvents() {
     this.resetButton.addEventListener("click", () => this.resetGraph());
     this.algoSelector.addEventListener("change", () => this.clearGraph());
     this.runButton.addEventListener("click", () => this.runAlgo());
     this.clearButton.addEventListener("click", () => this.clearGraph());
-
-    this.initGraphEvents();
-  }
-
-  resetGraph() {
-    this.graph.clear();
-    this.graph = new Grid();
-    this.graph.drawGrid();
-    this.initGraphEvents();
-
-    this.#ran = false;
-    this.runButton.disabled = false;
-  }
-
-  clearGraph() {
-    this.graph.clear();
-    this.graph.drawGrid();
-    this.initGraphEvents();
-
-    this.#ran = false;
-    this.runButton.disabled = false;
   }
 
   initGraphEvents() {
-    this.nodeElements = document.querySelectorAll(".grid-node");
-    let gridContainer = document.querySelector("#grid-container");
-
-    gridContainer.addEventListener("mousedown", (event) => {
+    this.gridContainer.addEventListener("mousedown", (event) => {
       event.preventDefault();
       if (
         !event.target.classList.contains("grid-node") ||
@@ -62,20 +48,20 @@ class GraphTraversalVisualizer {
         this.#leftClickDown = true;
 
         if (!event.target.classList.contains("wall-node")) {
-          this.addWall(event.target);
+          this.graph.addWall(event.target);
         }
       } else if (event.button == 2) {
         // console.log("RIGHTCLICK");
         this.#rightClickDown = true;
-        this.removeWall(event.target);
+        this.graph.removeWall(event.target);
       }
     });
 
-    gridContainer.addEventListener("contextmenu", (event) => {
+    this.gridContainer.addEventListener("contextmenu", (event) => {
       event.preventDefault();
     });
 
-    gridContainer.addEventListener("mousemove", (event) => {
+    this.gridContainer.addEventListener("mousemove", (event) => {
       event.preventDefault();
       if (
         !event.target.classList.contains("grid-node") ||
@@ -91,13 +77,13 @@ class GraphTraversalVisualizer {
         !event.target.classList.contains("wall-node")
       ) {
         // console.log("DRAGGING LEFT");
-        this.addWall(event.target);
+        this.graph.addWall(event.target);
       } else if (
         this.#rightClickDown &&
         event.target.classList.contains("wall-node")
       ) {
         // console.log("DRAGGING RIGHT");
-        this.removeWall(event.target);
+        this.graph.removeWall(event.target);
       }
     });
 
@@ -106,6 +92,25 @@ class GraphTraversalVisualizer {
       this.#leftClickDown = false;
       this.#rightClickDown = false;
     });
+  }
+
+  resetGraph() {
+    this.graph.clear();
+    this.graph = new Grid();
+    this.graph.drawGrid();
+    // this.initGraphEvents();
+
+    this.#ran = false;
+    this.runButton.disabled = false;
+  }
+
+  clearGraph() {
+    this.graph.clear();
+    this.graph.drawGrid();
+    // this.initGraphEvents();
+
+    this.#ran = false;
+    this.runButton.disabled = false;
   }
 
   runAlgo() {
@@ -127,14 +132,6 @@ class GraphTraversalVisualizer {
       default:
         alert("select a algorithm to begin!");
     }
-  }
-
-  addWall(nodeElement) {
-    this.graph.addWall(nodeElement);
-  }
-
-  removeWall(nodeElement) {
-    this.graph.removeWall(nodeElement);
   }
 }
 

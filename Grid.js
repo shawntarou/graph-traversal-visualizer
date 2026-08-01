@@ -4,23 +4,18 @@ import { DFS, DFSTraversal } from "./algorithms/DFS.js";
 import { dijkstra } from "./algorithms/dijkstra.js";
 
 export class Grid {
+  containerElement = document.querySelector("#grid-container");
   #height;
   #width;
-  #nodes;
-  #startNode;
-  #targetNode;
-  containerElement;
+  #nodes = [];
+  #startNode = null;
+  #targetNode = null;
   #timeoutRefs = [];
+  #walls = [];
 
-  constructor(height = 20, width = 40, walls = []) {
-    this.containerElement = document.querySelector("#grid-container");
-    this.#height = 20;
-    this.#width = 40;
-    this.#startNode = null;
-    this.#targetNode = null;
-    this.#nodes = [];
-
-    this.walls = walls;
+  constructor(height = 20, width = 40) {
+    this.#height = height;
+    this.#width = width;
   }
 
   get height() {
@@ -91,7 +86,6 @@ export class Grid {
         newGridRow.push(newGridNode);
         gridRow.appendChild(newGridNode.gridNodeElement);
       }
-      // console.log(newGridRow);
       this.#nodes.push(newGridRow);
     }
   }
@@ -200,26 +194,12 @@ export class Grid {
   }
 
   addWall(nodeElement) {
-    // need to rework this entire function
     const node = this.findNodeFromElement(nodeElement);
-    // if (node === this.#startNode || node === this.#targetNode) {
-    //   alert("NO!!!!"); // change this
-    // } else if (node.isWall) {
-    //   node.becomeNotWall();
-
-    //   const index = this.walls.findIndex((subArr) =>
-    //     subArr.every((posValue, i) => posValue === node.position[i]),
-    //   );
-    //   this.walls.splice(index, 1);
-    // } else {
-    //   node.becomeWall();
-    //   this.walls.push(node.position);
-    // }
     if (node === this.#startNode || node === this.#targetNode || node.isWall) {
       return;
     }
     node.becomeWall();
-    this.walls.push(node.position);
+    this.#walls.push(node.position);
   }
 
   removeWall(nodeElement) {
@@ -228,14 +208,14 @@ export class Grid {
       return;
     }
     node.becomeNotWall();
-    const index = this.walls.findIndex((subArr) =>
+    const index = this.#walls.findIndex((subArr) =>
       subArr.every((posValue, i) => posValue === node.position[i]),
     );
-    this.walls.splice(index, 1);
+    this.#walls.splice(index, 1);
   }
 
   isWall([row, col]) {
-    return this.walls.some((subArr) => subArr[0] === row && subArr[1] === col);
+    return this.#walls.some((subArr) => subArr[0] === row && subArr[1] === col);
   }
 
   findNodeFromElement(nodeElement) {
