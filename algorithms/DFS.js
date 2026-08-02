@@ -18,8 +18,8 @@ export function DFS(graph, currentNode, targetNode, visited) {
     const horizontalDirection = direction[1];
     const graphHeightLimit = graph.height - 1;
     const graphWidthLimit = graph.width - 1;
-    const nextRow = currentNode.position[0] + verticalDirection;
-    const nextCol = currentNode.position[1] + horizontalDirection;
+    const nextRow = currentNode.row + verticalDirection;
+    const nextCol = currentNode.col + horizontalDirection;
 
     if (
       nextRow < 0 ||

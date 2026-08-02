@@ -27,8 +27,8 @@ export function dijkstra(graph, startNode, targetNode) {
       const horizontalDirection = direction[1];
       const graphHeightLimit = graph.height - 1;
       const graphWidthLimit = graph.width - 1;
-      const nextRow = front.position[0] + verticalDirection;
-      const nextCol = front.position[1] + horizontalDirection;
+      const nextRow = front.row + verticalDirection;
+      const nextCol = front.col + horizontalDirection;
 
       if (
         nextRow < 0 ||

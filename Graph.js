@@ -31,6 +31,7 @@ export class Graph {
   }
 
   drawGraph() {
+    console.log(this.#walls);
     for (let row = 0; row < this.#height; ++row) {
       const graphRow = document.createElement("div");
       graphRow.classList.add("graph-row");
@@ -40,8 +41,8 @@ export class Graph {
       for (let col = 0; col < this.#width; ++col) {
         let newGraphNode = null;
 
-        if (this.isWall([row, col])) {
-          newGraphNode = new GraphNode([row, col], false, false, true);
+        if (this.isExistingWall(row, col)) {
+          newGraphNode = new GraphNode(row, col, false, false, true);
 
           newGraphRow.push(newGraphNode);
           graphRow.appendChild(newGraphNode.graphNodeElement);
@@ -50,7 +51,7 @@ export class Graph {
 
         if (row === 10 && col === 8) {
           // hardcoding start
-          newGraphNode = new GraphNode([row, col], true);
+          newGraphNode = new GraphNode(row, col, true);
           this.#startNode = newGraphNode;
         }
         // hardcoding weights
@@ -67,10 +68,10 @@ export class Graph {
         // }
         // hardcoding target
         else if (row === 10 && col == 22) {
-          newGraphNode = new GraphNode([row, col], false, true);
+          newGraphNode = new GraphNode(row, col, false, true);
           this.#targetNode = newGraphNode;
         } else {
-          newGraphNode = new GraphNode([row, col]);
+          newGraphNode = new GraphNode(row, col);
         }
 
         newGraphRow.push(newGraphNode);
@@ -183,17 +184,17 @@ export class Graph {
     return pathNodes.reverse();
   }
 
-  addWall(nodeElement) {
-    const node = this.findNodeFromElement(nodeElement);
+  addWall(row, col) {
+    const node = this.getNode(row, col);
     if (node === this.#startNode || node === this.#targetNode || node.isWall) {
       return;
     }
     node.becomeWall();
-    this.#walls.push(node.position);
+    this.#walls.push([node.row, node.col]);
   }
 
-  removeWall(nodeElement) {
-    const node = this.findNodeFromElement(nodeElement);
+  removeWall(row, col) {
+    const node = this.getNode(row, col);
     if (!node.isWall) {
       return;
     }
@@ -204,8 +205,15 @@ export class Graph {
     this.#walls.splice(index, 1);
   }
 
-  isWall([row, col]) {
+  isExistingWall(row, col) {
+    console.log(row);
+    console.log(col);
+
     return this.#walls.some((subArr) => subArr[0] === row && subArr[1] === col);
+  }
+
+  getNode(row, col) {
+    return this.#nodes[row][col];
   }
 
   findNodeFromElement(nodeElement) {

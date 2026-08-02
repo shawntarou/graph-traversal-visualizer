@@ -3,19 +3,23 @@ export class GraphNode {
   graphNodeElement;
 
   constructor(
-    position,
+    row,
+    col,
     isStart = false,
     isTarget = false,
     isWall = false,
     weight = 1.0,
   ) {
-    this.position = position;
+    this.row = row;
+    this.col = col;
+    this.position = [row, col];
     this.isStart = isStart;
     this.isTarget = isTarget;
     this.isWall = isWall;
     this.weight = weight;
 
     this.graphNodeElement = this.createGraphNodeElement();
+    this.graphNodeElement.setAttribute("id", `node-${row}-${col}`);
     this.#prevNode = null;
   }
 

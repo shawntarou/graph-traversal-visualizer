@@ -50,12 +50,20 @@ class GraphTraversalVisualizer {
         this.#leftClickDown = true;
 
         if (!event.target.classList.contains("wall-node")) {
-          this.graph.addWall(event.target);
+          const elementPosition = this.parseElementPosition(event.target);
+          const row = elementPosition[0];
+          const col = elementPosition[1];
+
+          this.graph.addWall(row, col);
         }
       } else if (event.button == 2) {
         // console.log("RIGHTCLICK");
         this.#rightClickDown = true;
-        this.graph.removeWall(event.target);
+        const elementPosition = this.parseElementPosition(event.target);
+        const row = elementPosition[0];
+        const col = elementPosition[1];
+
+        this.graph.removeWall(row, col);
       }
     });
 
@@ -79,13 +87,21 @@ class GraphTraversalVisualizer {
         !event.target.classList.contains("wall-node")
       ) {
         // console.log("DRAGGING LEFT");
-        this.graph.addWall(event.target);
+        const elementPosition = this.parseElementPosition(event.target);
+        const row = elementPosition[0];
+        const col = elementPosition[1];
+
+        this.graph.addWall(row, col);
       } else if (
         this.#rightClickDown &&
         event.target.classList.contains("wall-node")
       ) {
         // console.log("DRAGGING RIGHT");
-        this.graph.removeWall(event.target);
+        const elementPosition = this.parseElementPosition(event.target);
+        const row = elementPosition[0];
+        const col = elementPosition[1];
+
+        this.graph.removeWall(row, col);
       }
     });
 
@@ -116,12 +132,14 @@ class GraphTraversalVisualizer {
   }
 
   addWeight() {
-    // ask user what weight
-    // have them select where they want it
-    // maybe display a fake graph, where user can select using their mouse and then change target in real graph?
-    // maybe create a new function in graph.js called drawSelectablegraph?
-    // display weight number in node
     alert("test");
+  }
+
+  parseElementPosition(graphNodeElement) {
+    const idArr = graphNodeElement.id.split("-");
+    const row = idArr[1];
+    const col = idArr[2];
+    return [row, col];
   }
 
   runAlgo() {
