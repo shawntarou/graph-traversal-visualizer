@@ -4,8 +4,8 @@ export function dijkstra(graph, startNode, targetNode) {
   let pq = [];
   let dist = new Map();
 
-  dist.set(startNode.position, 0);
   pq.push({ node: startNode, dist: 0 });
+  dist.set(startNode.position, 0);
   sortpq(pq);
 
   const directions = [
@@ -44,6 +44,7 @@ export function dijkstra(graph, startNode, targetNode) {
       let adjNode = graph.nodes[nextRow][nextCol];
       if (!dist.has(adjNode.position)) {
         dist.set(adjNode.position, Infinity);
+        pq.push({ node: adjNode, dist: Infinity });
       }
 
       const altDist = dist.get(front.position) + adjNode.weight;
@@ -54,11 +55,7 @@ export function dijkstra(graph, startNode, targetNode) {
 
         // update distance in priority queue for adjNode
         const pqEntry = pq.find((item) => item.node === adjNode);
-        if (pqEntry) {
-          pqEntry.dist = altDist;
-        } else {
-          pq.push({ node: adjNode, dist: Infinity });
-        }
+        pqEntry.dist = altDist;
         sortpq(pq);
       }
     }
