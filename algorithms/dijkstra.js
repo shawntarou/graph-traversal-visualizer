@@ -42,11 +42,12 @@ export function dijkstra(graph, startNode, targetNode) {
       }
 
       let adjNode = graph.nodes[nextRow][nextCol];
-      dist.set(adjNode.position, Infinity);
-      pq.push({ node: adjNode, dist: Infinity });
-      sortpq(pq);
+      if (!dist.has(adjNode.position)) {
+        dist.set(adjNode.position, Infinity);
+      }
 
       const altDist = dist.get(front.position) + adjNode.weight;
+
       if (altDist < dist.get(adjNode.position)) {
         adjNode.prevNode = front;
         dist.set(adjNode.position, altDist);
@@ -55,6 +56,8 @@ export function dijkstra(graph, startNode, targetNode) {
         const pqEntry = pq.find((item) => item.node === adjNode);
         if (pqEntry) {
           pqEntry.dist = altDist;
+        } else {
+          pq.push({ node: adjNode, dist: Infinity });
         }
         sortpq(pq);
       }
