@@ -45,19 +45,6 @@ export class GraphNode {
     }
   }
 
-  becomeSelectable() {
-    this.graphNodeElement.classList.add("selectable");
-  }
-
-  becomeUnselectable() {
-    this.graphNodeElement.classList.remove("selectable");
-  }
-
-  becomeWall() {
-    this.isWall = true;
-    this.graphNodeElement.classList.add("wall-node");
-  }
-
   becomeGraphNode() {
     this.isStart = false;
     this.isTarget = false;

@@ -1,6 +1,6 @@
 import { GraphNode } from "./GraphNode.js";
 import { BFS } from "./algorithms/BFS.js";
-import { DFS, DFSTraversal } from "./algorithms/DFS.js";
+import { DFSTraversal } from "./algorithms/DFS.js";
 import { dijkstra } from "./algorithms/dijkstra.js";
 
 export class Graph {
@@ -142,6 +142,8 @@ export class Graph {
       const id = setTimeout(() => {
         currentNode.graphNodeElement.classList.add("active");
       }, delay);
+
+      this.#timeoutRefs.push(id);
     }
   }
 
@@ -164,7 +166,7 @@ export class Graph {
     this.startNode = node;
     this.start = this.startNode.position;
     this.startNode.isStart = true;
-    this.startNode.becomeUnselectable();
+    this.startNode.graphNodeElement.classList.remove("selectable");
     this.startNode.updateGraphNodeElement();
   }
 
@@ -174,7 +176,7 @@ export class Graph {
     this.targetNode = node;
     this.target = this.targetNode.position;
     this.targetNode.isTarget = true;
-    this.targetNode.becomeUnselectable();
+    this.startNode.graphNodeElement.classList.remove("selectable");
     this.targetNode.updateGraphNodeElement();
   }
 
@@ -188,7 +190,9 @@ export class Graph {
     ) {
       return;
     }
-    node.becomeWall();
+
+    node.isWall = true;
+    node.graphNodeElement.classList.add("wall-node");
     this.walls.push([node.row, node.col]);
   }
 
@@ -230,7 +234,8 @@ export class Graph {
         if (node.isStart || node.isTarget || node.isWall || node.weight > 1) {
           continue;
         }
-        node.becomeSelectable();
+
+        node.graphNodeElement.classList.add("selectable");
       }
     }
   }
@@ -241,7 +246,8 @@ export class Graph {
         if (node.isStart || node.isTarget || node.isWall || node.weight > 1) {
           continue;
         }
-        node.becomeUnselectable();
+
+        node.graphNodeElement.classList.remove("selectable");
       }
     }
   }

@@ -46,9 +46,8 @@ class GraphTraversalVisualizer {
   }
 
   initButtonEvents() {
-    this.resetButton.addEventListener("click", () => this.resetGraph());
     this.algoSelector.addEventListener("change", () => {
-      if (this.#lastSelectedAlgo == "dijkstra") {
+      if (this.#lastSelectedAlgo === "dijkstra") {
         this.resetGraph();
       } else {
         this.clearGraph();
@@ -57,12 +56,14 @@ class GraphTraversalVisualizer {
       const algoChoice = this.algoSelector.value;
       this.#lastSelectedAlgo = algoChoice;
 
-      if (algoChoice == "dijkstra") {
+      if (algoChoice === "dijkstra") {
         this.addWeightButton.disabled = false;
       } else {
         this.addWeightButton.disabled = true;
       }
     });
+
+    this.resetButton.addEventListener("click", () => this.resetGraph());
     this.runButton.addEventListener("click", () => this.runAlgo());
     this.clearButton.addEventListener("click", () => this.clearGraph());
     this.addWeightButton.addEventListener("click", () =>
@@ -91,16 +92,16 @@ class GraphTraversalVisualizer {
       const [row, col] = elementPosition;
 
       if (event.button == 0) {
-        // console.log("MOUSEDOWN");
+        // console.log("LEFTCLICK");
         this.#leftClickDown = true;
-        if (this.#selecting_weight) {
-          this.graph.addWeight(row, col);
-        } else if (this.#selecting_start) {
+        if (this.#selecting_start) {
           this.graph.setStart(row, col);
           this.toggleSelectStartMode();
         } else if (this.#selecting_target) {
           this.graph.setTarget(row, col);
           this.toggleSelectTargetMode();
+        } else if (this.#selecting_weight) {
+          this.graph.addWeight(row, col);
         } else {
           this.graph.addWall(row, col);
         }
@@ -131,25 +132,20 @@ class GraphTraversalVisualizer {
         return;
       }
 
+      const elementPosition = this.parseElementPosition(event.target);
+      const [row, col] = elementPosition;
+
       if (
         this.#leftClickDown &&
         !event.target.classList.contains("wall-node")
       ) {
         // console.log("DRAGGING LEFT");
-        const elementPosition = this.parseElementPosition(event.target);
-        const row = elementPosition[0];
-        const col = elementPosition[1];
-
         this.graph.addWall(row, col);
       } else if (
         this.#rightClickDown &&
         event.target.classList.contains("wall-node")
       ) {
         // console.log("DRAGGING RIGHT");
-        const elementPosition = this.parseElementPosition(event.target);
-        const row = elementPosition[0];
-        const col = elementPosition[1];
-
         this.graph.removeWall(row, col);
       }
     });
