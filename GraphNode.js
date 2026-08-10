@@ -31,9 +31,6 @@ export class GraphNode {
   }
 
   updateGraphNodeElement() {
-    if (this.weight > 1.0) {
-      this.graphNodeElement.classList.add("weight-node");
-    }
     if (this.isStart) {
       this.graphNodeElement.classList.add("start-node");
     }
@@ -42,6 +39,9 @@ export class GraphNode {
     }
     if (this.isWall) {
       this.graphNodeElement.classList.add("wall-node");
+    }
+    if (this.weight > 1.0) {
+      this.graphNodeElement.classList.add("weight-node");
     }
   }
 
@@ -53,6 +53,7 @@ export class GraphNode {
     this.graphNodeElement.classList = "graph-node";
   }
 
+  // maybe can just set weight in graph and then call updateGraphNodeElement?
   setWeight(weight) {
     this.weight = weight;
     if (weight > 1) {

@@ -48,7 +48,7 @@ class GraphTraversalVisualizer {
   initButtonEvents() {
     this.algoSelector.addEventListener("change", () => {
       if (this.#lastSelectedAlgo === "dijkstra") {
-        this.resetGraph();
+        this.clearGraphNoWeights();
       } else {
         this.clearGraph();
       }
@@ -196,18 +196,40 @@ class GraphTraversalVisualizer {
     }
   }
 
+  clearGraphNoWeights() {
+    this.graph.clear();
+    this.graph.clearWeights();
+    this.graph.drawGraph();
+
+    this.#ran = false;
+    this.#selecting_weight = false;
+    this.runButton.disabled = false;
+    this.selectStartButton.disabled = false;
+    this.selectTargetButton.disabled = false;
+
+    const algoChoice = this.algoSelector.value;
+    if (algoChoice == "dijkstra") {
+      this.addWeightButton.disabled = false;
+    }
+  }
+
   toggleSelectWeightMode() {
     if (!this.#selecting_weight) {
       this.graph.makeValidNodesSelectable();
       this.#selecting_weight = true;
-      this.runButton.disabled = true;
-      this.clearButton.disabled = true;
       this.selectStartButton.disabled = true;
       this.selectTargetButton.disabled = true;
+      this.toggleUI();
     } else {
       this.graph.makeValidNodesUnselectable();
       this.#selecting_weight = false;
-      this.runButton.disabled = false;
+      this.selectStartButton.disabled = false;
+      this.selectTargetButton.disabled = false;
+      this.toggleUI();
+
+      if (this.algoSelector.value == "dijkstra") {
+        this.addWeightButton.disabled = false;
+      }
     }
   }
 
@@ -255,7 +277,6 @@ class GraphTraversalVisualizer {
     this.runButton.disabled = this.#UIEnabled;
     this.clearButton.disabled = this.#UIEnabled;
     this.resetButton.disabled = this.#UIEnabled;
-    this.runButton.disabled = this.#UIEnabled;
     this.algoSelector.disabled = this.#UIEnabled;
   }
 

@@ -61,6 +61,10 @@ export class Graph {
     this.clearTimeouts();
   }
 
+  clearWeights() {
+    this.weights = [];
+  }
+
   clearTimeouts() {
     for (const id of this.#timeoutRefs) {
       clearTimeout(id);
