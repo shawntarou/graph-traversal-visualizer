@@ -1,5 +1,6 @@
 export class GraphNode {
-  #prevNode;
+  prevNode;
+  weight;
   graphNodeElement;
 
   constructor(
@@ -8,7 +9,7 @@ export class GraphNode {
     isStart = false,
     isTarget = false,
     isWall = false,
-    weight = 1.0,
+    weight = 1,
   ) {
     this.row = row;
     this.col = col;
@@ -17,41 +18,39 @@ export class GraphNode {
     this.isTarget = isTarget;
     this.isWall = isWall;
     this.weight = weight;
+    this.prevNode = null;
 
-    this.graphNodeElement = this.createGraphNodeElement();
-    this.graphNodeElement.setAttribute("id", `node-${row}-${col}`);
-    this.#prevNode = null;
+    this.initGraphNodeElement();
   }
 
-  get graphNodeElement() {
-    return this.graphNodeElement;
+  initGraphNodeElement() {
+    this.graphNodeElement = document.createElement("div");
+    this.graphNodeElement.classList.add("graph-node");
+    this.graphNodeElement.setAttribute("id", `node-${this.row}-${this.col}`);
+    this.updateGraphNodeElement();
   }
 
-  get prevNode() {
-    return this.#prevNode;
-  }
-
-  set prevNode(node) {
-    this.#prevNode = node;
-  }
-
-  createGraphNodeElement() {
-    let newGraphNodeElement = document.createElement("div");
-    newGraphNodeElement.classList.add("graph-node");
+  updateGraphNodeElement() {
     if (this.weight > 1.0) {
-      newGraphNodeElement.classList.add("weight-node");
+      this.graphNodeElement.classList.add("weight-node");
     }
     if (this.isStart) {
-      newGraphNodeElement.classList.add("start-node");
+      this.graphNodeElement.classList.add("start-node");
     }
     if (this.isTarget) {
-      newGraphNodeElement.classList.add("target-node");
+      this.graphNodeElement.classList.add("target-node");
     }
     if (this.isWall) {
-      newGraphNodeElement.classList.add("wall-node");
+      this.graphNodeElement.classList.add("wall-node");
     }
+  }
 
-    return newGraphNodeElement;
+  becomeSelectable() {
+    this.graphNodeElement.classList.add("selectable");
+  }
+
+  becomeUnselectable() {
+    this.graphNodeElement.classList.remove("selectable");
   }
 
   becomeWall() {
@@ -59,8 +58,20 @@ export class GraphNode {
     this.graphNodeElement.classList.add("wall-node");
   }
 
-  becomeNotWall() {
+  becomeGraphNode() {
+    this.isStart = false;
+    this.isTarget = false;
     this.isWall = false;
-    this.graphNodeElement.classList.remove("wall-node");
+    this.weight = false;
+    this.graphNodeElement.classList = "graph-node";
+  }
+
+  setWeight(weight) {
+    this.weight = weight;
+    if (weight > 1) {
+      this.graphNodeElement.classList.add("weight-node");
+    } else {
+      this.graphNodeElement.classList = "graph-node";
+    }
   }
 }

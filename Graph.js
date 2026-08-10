@@ -4,72 +4,46 @@ import { DFS, DFSTraversal } from "./algorithms/DFS.js";
 import { dijkstra } from "./algorithms/dijkstra.js";
 
 export class Graph {
+  height;
+  width;
+  startNode;
+  targetNode;
+  start;
+  target;
+  nodes = [];
+  walls = [];
+  weights = [];
+
   #containerElement = document.querySelector("#graph-container");
-  #height;
-  #width;
-  #startNode;
-  #targetNode;
-  #nodes = [];
   #timeoutRefs = [];
-  #walls = [];
 
-  constructor(height = 20, width = 40) {
-    this.#height = height;
-    this.#width = width;
-  }
-
-  get height() {
-    return this.#height;
-  }
-
-  get width() {
-    return this.#width;
-  }
-
-  get nodes() {
-    return this.#nodes;
+  constructor(height, width, start, target) {
+    this.height = height;
+    this.width = width;
+    this.start = start;
+    this.target = target;
   }
 
   drawGraph() {
-    console.log(this.#walls);
-    for (let row = 0; row < this.#height; ++row) {
+    for (let row = 0; row < this.height; ++row) {
       const graphRow = document.createElement("div");
       graphRow.classList.add("graph-row");
       this.#containerElement.appendChild(graphRow);
 
       let newGraphRow = [];
-      for (let col = 0; col < this.#width; ++col) {
+      for (let col = 0; col < this.width; ++col) {
         let newGraphNode = null;
 
-        if (this.isExistingWall(row, col)) {
-          newGraphNode = new GraphNode(row, col, false, false, true);
-
-          newGraphRow.push(newGraphNode);
-          graphRow.appendChild(newGraphNode.graphNodeElement);
-          continue;
-        }
-
-        if (row === 10 && col === 8) {
-          // hardcoding start
+        if (this.isStart(row, col)) {
           newGraphNode = new GraphNode(row, col, true);
-          this.#startNode = newGraphNode;
-        }
-        // hardcoding weights
-        // else if (row === 10 && col === 9) {
-        //   newGraphNode = new GraphNode([row, col], false, false, false, 3.0);
-        // } else if (row === 11 && col === 9) {
-        //   newGraphNode = new GraphNode([row, col], false, false, false, 3.0);
-        // } else if (row === 10 && col === 15) {
-        //   newGraphNode = new GraphNode([row, col], false, false, false, 3.0);
-        // } else if (row === 11 && col === 15) {
-        //   newGraphNode = new GraphNode([row, col], false, false, false, 3.0);
-        // } else if (row === 12 && col === 15) {
-        //   newGraphNode = new GraphNode([row, col], false, false, false, 3.0);
-        // }
-        // hardcoding target
-        else if (row === 10 && col == 22) {
+          this.startNode = newGraphNode;
+        } else if (this.isTarget(row, col)) {
           newGraphNode = new GraphNode(row, col, false, true);
-          this.#targetNode = newGraphNode;
+          this.targetNode = newGraphNode;
+        } else if (this.isExistingWall(row, col)) {
+          newGraphNode = new GraphNode(row, col, false, false, true);
+        } else if (this.isExistingWeight(row, col)) {
+          newGraphNode = new GraphNode(row, col, false, false, false, 3);
         } else {
           newGraphNode = new GraphNode(row, col);
         }
@@ -77,13 +51,13 @@ export class Graph {
         newGraphRow.push(newGraphNode);
         graphRow.appendChild(newGraphNode.graphNodeElement);
       }
-      this.#nodes.push(newGraphRow);
+      this.nodes.push(newGraphRow);
     }
   }
 
   clear() {
     this.#containerElement.replaceChildren();
-    this.#nodes = [];
+    this.nodes = [];
     this.clearTimeouts();
   }
 
@@ -95,17 +69,17 @@ export class Graph {
   }
 
   doBFS() {
-    let visitedNodes = BFS(this, this.#startNode, this.#targetNode);
+    let visitedNodes = BFS(this, this.startNode, this.targetNode);
     this.visualizeAlgo(visitedNodes);
   }
 
   doDFS() {
-    let visitedNodes = DFSTraversal(this, this.#startNode, this.#targetNode);
+    let visitedNodes = DFSTraversal(this, this.startNode, this.targetNode);
     this.visualizeAlgo(visitedNodes);
   }
 
   doDijkstra() {
-    let visitedNodes = dijkstra(this, this.#startNode, this.#targetNode);
+    let visitedNodes = dijkstra(this, this.startNode, this.targetNode);
     this.visualizeAlgo(visitedNodes);
   }
 
@@ -116,7 +90,7 @@ export class Graph {
     let pathNodes = this.orderPathNodes(visitedNodes);
     const id = setTimeout(
       () => {
-        if (visitedNodes.at(-1) === this.#targetNode) {
+        if (visitedNodes.at(-1) === this.targetNode) {
           this.displayPathNodes(pathNodes);
         } else {
           alert("Target not found!");
@@ -133,7 +107,7 @@ export class Graph {
       const delay = 10 * i;
       const currentNode = visitedNodes[i];
 
-      if (currentNode.weight > 1.0 || currentNode === this.#targetNode) {
+      if (currentNode.weight > 1.0 || currentNode === this.targetNode) {
         continue;
       }
 
@@ -174,8 +148,8 @@ export class Graph {
   orderPathNodes(visitedNodes) {
     let pathNodes = [];
     let currentNode = visitedNodes.at(-1);
-    while (currentNode !== this.#startNode) {
-      if (currentNode !== this.#targetNode) {
+    while (currentNode !== this.startNode) {
+      if (currentNode !== this.targetNode) {
         pathNodes.push(currentNode);
       }
       currentNode = currentNode.prevNode;
@@ -184,13 +158,38 @@ export class Graph {
     return pathNodes.reverse();
   }
 
+  setStart(row, col) {
+    const node = this.getNode(row, col);
+    this.startNode.becomeGraphNode();
+    this.startNode = node;
+    this.start = this.startNode.position;
+    this.startNode.isStart = true;
+    this.startNode.becomeUnselectable();
+    this.startNode.updateGraphNodeElement();
+  }
+
+  setTarget(row, col) {
+    const node = this.getNode(row, col);
+    this.targetNode.becomeGraphNode();
+    this.targetNode = node;
+    this.target = this.targetNode.position;
+    this.targetNode.isTarget = true;
+    this.targetNode.becomeUnselectable();
+    this.targetNode.updateGraphNodeElement();
+  }
+
   addWall(row, col) {
     const node = this.getNode(row, col);
-    if (node === this.#startNode || node === this.#targetNode || node.isWall) {
+    if (
+      node === this.startNode ||
+      node === this.targetNode ||
+      node.isWall ||
+      node.weight > 1
+    ) {
       return;
     }
     node.becomeWall();
-    this.#walls.push([node.row, node.col]);
+    this.walls.push([node.row, node.col]);
   }
 
   removeWall(row, col) {
@@ -198,28 +197,86 @@ export class Graph {
     if (!node.isWall) {
       return;
     }
-    node.becomeNotWall();
-    const index = this.#walls.findIndex((subArr) =>
+    node.becomeGraphNode();
+    const index = this.walls.findIndex((subArr) =>
       subArr.every((posValue, i) => posValue === node.position[i]),
     );
-    this.#walls.splice(index, 1);
+    this.walls.splice(index, 1);
   }
 
   isExistingWall(row, col) {
-    console.log(row);
-    console.log(col);
+    return this.walls.some((subArr) => subArr[0] === row && subArr[1] === col);
+  }
 
-    return this.#walls.some((subArr) => subArr[0] === row && subArr[1] === col);
+  isExistingWeight(row, col) {
+    return this.weights.some(
+      (subArr) => subArr[0] === row && subArr[1] === col,
+    );
+  }
+
+  isStart(row, col) {
+    const [start_row, start_col] = this.start;
+    return start_row === row && start_col === col;
+  }
+
+  isTarget(row, col) {
+    const [target_row, target_col] = this.target;
+    return target_row === row && target_col === col;
+  }
+
+  makeValidNodesSelectable() {
+    for (const row of this.nodes) {
+      for (const node of row) {
+        if (node.isStart || node.isTarget || node.isWall || node.weight > 1) {
+          continue;
+        }
+        node.becomeSelectable();
+      }
+    }
+  }
+
+  makeValidNodesUnselectable() {
+    for (const row of this.nodes) {
+      for (const node of row) {
+        if (node.isStart || node.isTarget || node.isWall || node.weight > 1) {
+          continue;
+        }
+        node.becomeUnselectable();
+      }
+    }
+  }
+
+  addWeight(row, col) {
+    const node = this.getNode(row, col);
+    if (node.isStart || node.isTarget || node.isWall || node.weight > 1) {
+      return;
+    }
+
+    node.setWeight(3);
+    this.weights.push([row, col]);
+  }
+
+  removeWeight(row, col) {
+    const node = this.getNode(row, col);
+    if (node.weight <= 1) {
+      return;
+    }
+
+    node.becomeGraphNode();
+    const index = this.weights.findIndex((subArr) =>
+      subArr.every((posValue, i) => posValue === node.position[i]),
+    );
+    this.weights.splice(index, 1);
   }
 
   getNode(row, col) {
-    return this.#nodes[row][col];
+    return this.nodes[row][col];
   }
 
   findNodeFromElement(nodeElement) {
-    for (let i = 0; i < this.#nodes.length; ++i) {
-      for (let j = 0; j < this.#nodes[i].length; ++j) {
-        const currentNode = this.#nodes[i][j];
+    for (let i = 0; i < this.nodes.length; ++i) {
+      for (let j = 0; j < this.nodes[i].length; ++j) {
+        const currentNode = this.nodes[i][j];
         const currentNodeElement = currentNode.graphNodeElement;
 
         if (currentNodeElement === nodeElement) {

@@ -25,10 +25,10 @@ html {
   justify-content: center;
 }
 
-/* #graph-container {
-  display: flex;
-  flex-direction: column;
-} */
+#graph-container,
+#selectable-graph-container {
+  margin-top: 10px;
+}
 
 .graph-row {
   display: flex;
@@ -39,6 +39,7 @@ html {
   min-width: 30px;
   min-height: 30px;
   border: 1px solid rgb(69, 144, 255);
+  border-radius: 0px;
 }
 
 .start-node {
@@ -103,6 +104,11 @@ html {
 
 .selectable {
   cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.selectable:hover {
+  background-color: grey;
 }
 
 @keyframes visitedAnimation {
