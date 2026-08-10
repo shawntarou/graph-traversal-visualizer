@@ -1,10 +1,10 @@
 import { Graph } from "./Graph.js";
 
 class GraphTraversalVisualizer {
-  #height = 20;
-  #width = 40;
-  #start = [10, 8];
-  #target = [10, 22];
+  #height = parseInt(window.innerHeight / 35);
+  #width = parseInt(window.innerWidth / 40);
+  #start = [parseInt(this.#height / 2), parseInt(this.#width / 4)];
+  #target = [this.#start[0], this.#width - this.#start[1] - 1];
   #ran = false;
   #selecting_weight = false;
   #selecting_start = false;

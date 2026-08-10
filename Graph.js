@@ -8,20 +8,20 @@ export class Graph {
   width;
   startNode;
   targetNode;
-  start;
-  target;
   nodes = [];
-  walls = [];
-  weights = [];
 
+  #start;
+  #target;
+  #walls = [];
+  #weights = [];
   #containerElement = document.querySelector("#graph-container");
   #timeoutRefs = [];
 
   constructor(height, width, start, target) {
     this.height = height;
     this.width = width;
-    this.start = start;
-    this.target = target;
+    this.#start = start;
+    this.#target = target;
   }
 
   drawGraph() {
@@ -58,14 +58,14 @@ export class Graph {
   clear() {
     this.#containerElement.replaceChildren();
     this.nodes = [];
-    this.clearTimeouts();
+    this.#clearTimeouts();
   }
 
   clearWeights() {
     this.weights = [];
   }
 
-  clearTimeouts() {
+  #clearTimeouts() {
     for (const id of this.#timeoutRefs) {
       clearTimeout(id);
     }
@@ -74,20 +74,20 @@ export class Graph {
 
   doBFS() {
     let visitedNodes = BFS(this, this.startNode, this.targetNode);
-    this.visualizeAlgo(visitedNodes);
+    this.#visualizeAlgo(visitedNodes);
   }
 
   doDFS() {
     let visitedNodes = DFSTraversal(this, this.startNode, this.targetNode);
-    this.visualizeAlgo(visitedNodes);
+    this.#visualizeAlgo(visitedNodes);
   }
 
   doDijkstra() {
     let visitedNodes = dijkstra(this, this.startNode, this.targetNode);
-    this.visualizeAlgo(visitedNodes);
+    this.#visualizeAlgo(visitedNodes);
   }
 
-  visualizeAlgo(visitedNodes) {
+  #visualizeAlgo(visitedNodes) {
     visitedNodes = this.processVisitedNodes(visitedNodes);
     this.displayVisitedNodes(visitedNodes);
 
@@ -168,7 +168,7 @@ export class Graph {
     const node = this.getNode(row, col);
     this.startNode.becomeGraphNode();
     this.startNode = node;
-    this.start = this.startNode.position;
+    this.#start = this.startNode.position;
     this.startNode.isStart = true;
     this.startNode.graphNodeElement.classList.remove("selectable");
     this.startNode.updateGraphNodeElement();
@@ -178,7 +178,7 @@ export class Graph {
     const node = this.getNode(row, col);
     this.targetNode.becomeGraphNode();
     this.targetNode = node;
-    this.target = this.targetNode.position;
+    this.#target = this.targetNode.position;
     this.targetNode.isTarget = true;
     this.startNode.graphNodeElement.classList.remove("selectable");
     this.targetNode.updateGraphNodeElement();
@@ -197,7 +197,7 @@ export class Graph {
 
     node.isWall = true;
     node.graphNodeElement.classList.add("wall-node");
-    this.walls.push([node.row, node.col]);
+    this.#walls.push([node.row, node.col]);
   }
 
   removeWall(row, col) {
@@ -206,29 +206,29 @@ export class Graph {
       return;
     }
     node.becomeGraphNode();
-    const index = this.walls.findIndex((subArr) =>
+    const index = this.#walls.findIndex((subArr) =>
       subArr.every((posValue, i) => posValue === node.position[i]),
     );
-    this.walls.splice(index, 1);
+    this.#walls.splice(index, 1);
   }
 
   isExistingWall(row, col) {
-    return this.walls.some((subArr) => subArr[0] === row && subArr[1] === col);
+    return this.#walls.some((subArr) => subArr[0] === row && subArr[1] === col);
   }
 
   isExistingWeight(row, col) {
-    return this.weights.some(
+    return this.#weights.some(
       (subArr) => subArr[0] === row && subArr[1] === col,
     );
   }
 
   isStart(row, col) {
-    const [start_row, start_col] = this.start;
+    const [start_row, start_col] = this.#start;
     return start_row === row && start_col === col;
   }
 
   isTarget(row, col) {
-    const [target_row, target_col] = this.target;
+    const [target_row, target_col] = this.#target;
     return target_row === row && target_col === col;
   }
 
@@ -263,7 +263,7 @@ export class Graph {
     }
 
     node.setWeight(3);
-    this.weights.push([row, col]);
+    this.#weights.push([row, col]);
   }
 
   removeWeight(row, col) {
@@ -273,10 +273,10 @@ export class Graph {
     }
 
     node.becomeGraphNode();
-    const index = this.weights.findIndex((subArr) =>
+    const index = this.#weights.findIndex((subArr) =>
       subArr.every((posValue, i) => posValue === node.position[i]),
     );
-    this.weights.splice(index, 1);
+    this.#weights.splice(index, 1);
   }
 
   getNode(row, col) {
