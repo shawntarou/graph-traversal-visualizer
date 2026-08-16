@@ -54,6 +54,11 @@ button {
   border: none;
   cursor: pointer;
   padding: 0;
+  transition: all 0.2s ease-in-out;
+}
+
+button:hover {
+  transform: scale(1.1);
 }
 
 select,

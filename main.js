@@ -169,8 +169,8 @@ class GraphTraversalVisualizer {
 
     this.#ran = false;
     this.#selecting_weight = false;
-    this.runButton.disabled = false;
-    this.clearButton.disabled = false;
+    this.runButton.style.display = "inline-block";
+    this.clearButton.style.display = "none";
     this.selectStartButton.disabled = false;
     this.selectTargetButton.disabled = false;
 
@@ -186,7 +186,6 @@ class GraphTraversalVisualizer {
 
     this.#ran = false;
     this.#selecting_weight = false;
-    // this.runButton.disabled = false;
     this.runButton.style.display = "inline-block";
     this.clearButton.style.display = "none";
     this.selectStartButton.disabled = false;
@@ -205,7 +204,8 @@ class GraphTraversalVisualizer {
 
     this.#ran = false;
     this.#selecting_weight = false;
-    this.runButton.disabled = false;
+    this.runButton.style.display = "inline-block";
+    this.clearButton.style.display = "none";
     this.selectStartButton.disabled = false;
     this.selectTargetButton.disabled = false;
 
@@ -277,7 +277,6 @@ class GraphTraversalVisualizer {
     this.#UIEnabled = !this.#UIEnabled;
 
     this.runButton.disabled = this.#UIEnabled;
-    this.clearButton.disabled = this.#UIEnabled;
     this.resetButton.disabled = this.#UIEnabled;
     this.algoSelector.disabled = this.#UIEnabled;
   }
@@ -290,7 +289,6 @@ class GraphTraversalVisualizer {
   }
 
   runAlgo() {
-    // this.runButton.disabled = true;
     this.runButton.style.display = "none";
     this.clearButton.style.display = "inline-block";
     this.selectStartButton.disabled = true;
