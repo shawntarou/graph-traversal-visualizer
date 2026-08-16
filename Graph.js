@@ -117,6 +117,9 @@ export class Graph {
 
       const id = setTimeout(() => {
         currentNode.graphNodeElement.classList.add("active");
+        currentNode.graphNodeElement.addEventListener("animationend", () => {
+          currentNode.graphNodeElement.classList.remove("empty-node");
+        });
       }, delay);
 
       this.#timeoutRefs.push(id);
@@ -140,8 +143,10 @@ export class Graph {
     for (let i = 0; i < pathNodes.length; ++i) {
       const delay = 100 * i;
       let currentNode = pathNodes[i];
+      currentNode.graphNodeElement.classList.remove("empty-node");
       currentNode.graphNodeElement.classList.remove("active");
       currentNode.graphNodeElement.classList.add("path-node");
+      currentNode.graphNodeElement.classList.remove("visited-node");
 
       const id = setTimeout(() => {
         currentNode.graphNodeElement.classList.add("active");
@@ -166,7 +171,7 @@ export class Graph {
 
   setStart(row, col) {
     const node = this.getNode(row, col);
-    this.startNode.becomeGraphNode();
+    this.startNode.becomeEmptyNode();
     this.startNode = node;
     this.#start = this.startNode.position;
     this.startNode.isStart = true;
@@ -176,11 +181,11 @@ export class Graph {
 
   setTarget(row, col) {
     const node = this.getNode(row, col);
-    this.targetNode.becomeGraphNode();
+    this.targetNode.becomeEmptyNode();
     this.targetNode = node;
     this.#target = this.targetNode.position;
     this.targetNode.isTarget = true;
-    this.startNode.graphNodeElement.classList.remove("selectable");
+    this.targetNode.graphNodeElement.classList.remove("selectable");
     this.targetNode.updateGraphNodeElement();
   }
 
@@ -196,7 +201,7 @@ export class Graph {
     }
 
     node.isWall = true;
-    node.graphNodeElement.classList.add("wall-node");
+    node.updateGraphNodeElement();
     this.#walls.push([node.row, node.col]);
   }
 
@@ -205,7 +210,7 @@ export class Graph {
     if (!node.isWall) {
       return;
     }
-    node.becomeGraphNode();
+    node.becomeEmptyNode();
     const index = this.#walls.findIndex((subArr) =>
       subArr.every((posValue, i) => posValue === node.position[i]),
     );
@@ -262,7 +267,8 @@ export class Graph {
       return;
     }
 
-    node.setWeight(3);
+    node.weight = 10;
+    node.updateGraphNodeElement();
     this.#weights.push([row, col]);
   }
 
@@ -272,7 +278,7 @@ export class Graph {
       return;
     }
 
-    node.becomeGraphNode();
+    node.becomeEmptySelectableNode();
     const index = this.#weights.findIndex((subArr) =>
       subArr.every((posValue, i) => posValue === node.position[i]),
     );

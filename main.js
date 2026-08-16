@@ -1,9 +1,9 @@
 import { Graph } from "./Graph.js";
 
 class GraphTraversalVisualizer {
-  #height = parseInt(window.innerHeight / 35);
+  #height = parseInt(window.innerHeight / 33);
   #width = parseInt(window.innerWidth / 40);
-  #start = [parseInt(this.#height / 2), parseInt(this.#width / 4)];
+  #start = [parseInt(this.#height / 2 - 1), parseInt(this.#width / 4)];
   #target = [this.#start[0], this.#width - this.#start[1] - 1];
   #ran = false;
   #selecting_weight = false;
@@ -186,7 +186,9 @@ class GraphTraversalVisualizer {
 
     this.#ran = false;
     this.#selecting_weight = false;
-    this.runButton.disabled = false;
+    // this.runButton.disabled = false;
+    this.runButton.style.display = "inline-block";
+    this.clearButton.style.display = "none";
     this.selectStartButton.disabled = false;
     this.selectTargetButton.disabled = false;
 
@@ -288,7 +290,9 @@ class GraphTraversalVisualizer {
   }
 
   runAlgo() {
-    this.runButton.disabled = true;
+    // this.runButton.disabled = true;
+    this.runButton.style.display = "none";
+    this.clearButton.style.display = "inline-block";
     this.selectStartButton.disabled = true;
     this.selectTargetButton.disabled = true;
     this.addWeightButton.disabled = true;

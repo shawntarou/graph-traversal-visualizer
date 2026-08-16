@@ -25,41 +25,40 @@ export class GraphNode {
 
   initGraphNodeElement() {
     this.graphNodeElement = document.createElement("div");
-    this.graphNodeElement.classList.add("graph-node");
     this.graphNodeElement.setAttribute("id", `node-${this.row}-${this.col}`);
     this.updateGraphNodeElement();
   }
 
   updateGraphNodeElement() {
+    this.graphNodeElement.classList = "graph-node";
+
     if (this.isStart) {
       this.graphNodeElement.classList.add("start-node");
-    }
-    if (this.isTarget) {
+    } else if (this.isTarget) {
       this.graphNodeElement.classList.add("target-node");
-    }
-    if (this.isWall) {
+    } else if (this.isWall) {
       this.graphNodeElement.classList.add("wall-node");
-    }
-    if (this.weight > 1.0) {
+    } else if (this.weight > 1.0) {
       this.graphNodeElement.classList.add("weight-node");
+    } else {
+      this.graphNodeElement.classList.add("empty-node");
     }
   }
 
-  becomeGraphNode() {
+  becomeEmptyNode() {
     this.isStart = false;
     this.isTarget = false;
     this.isWall = false;
-    this.weight = false;
-    this.graphNodeElement.classList = "graph-node";
+    this.weight = 0;
+    this.updateGraphNodeElement();
   }
 
-  // maybe can just set weight in graph and then call updateGraphNodeElement?
-  setWeight(weight) {
-    this.weight = weight;
-    if (weight > 1) {
-      this.graphNodeElement.classList.add("weight-node");
-    } else {
-      this.graphNodeElement.classList = "graph-node";
-    }
+  becomeEmptySelectableNode() {
+    this.isStart = false;
+    this.isTarget = false;
+    this.isWall = false;
+    this.weight = 0;
+    this.updateGraphNodeElement();
+    this.graphNodeElement.classList.add("selectable");
   }
 }

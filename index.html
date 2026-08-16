@@ -6,24 +6,46 @@
     <title>Graph Traversal Visualizer</title>
     <link href="styles.css" rel="stylesheet" />
     <script type="module" src="main.js" defer></script>
+    <script
+      src="https://kit.fontawesome.com/0a914059e1.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
+    <header>
+      <div class="header-left">
+        <button class="reset-button" title="Reset Graph">
+          <i class="fa-solid fa-rotate-left"></i>
+        </button>
+        <select id="algo-selector">
+          <option value="BFS">Breadth-First Search</option>
+          <option value="DFS">Depth-First Search</option>
+          <option value="dijkstra">Dijkstra's Algorithm</option>
+        </select>
+        <button class="clear-button" title="Clear Graph">
+          <i class="fa-solid fa-border-none"></i>
+        </button>
+
+        <button class="run-algo-button" title="Run Selected Algorithm">
+          <i class="fa-solid fa-play"></i>
+        </button>
+
+        <button class="add-weight-button" title="Add Weight">
+          <i class="fa-solid fa-weight-hanging"></i>
+        </button>
+      </div>
+      <div class="header-middle"></div>
+      <div class="header-right">
+        <button class="select-start-button" title="Select New Start">
+          <i class="fa-solid fa-flag"></i>
+        </button>
+        <button class="select-target-button" title="Select New Target">
+          <i class="fa-solid fa-bullseye"></i>
+        </button>
+      </div>
+    </header>
     <main>
-      <button class="reset-button">Reset</button>
-
-      <select id="algo-selector">
-        <option value="BFS">Breadth-First Search</option>
-        <option value="DFS">Depth-First Search</option>
-        <option value="dijkstra">Dijkstra's Algorithm</option>
-      </select>
-
-      <button class="run-algo-button">run algo</button>
-      <button class="clear-button">clear</button>
-      <button class="add-weight-button">add weight</button>
-      <button class="select-start-button">select start</button>
-      <button class="select-target-button">select target</button>
       <div id="graph-container"></div>
-      <div id="selectable-graph-container"></div>
     </main>
   </body>
 </html>

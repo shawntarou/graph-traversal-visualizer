@@ -4,6 +4,10 @@
   --midnight-navy: #001736;
   --deep-navy: #00183e;
   --gold: #ffc54a;
+
+  --header: rgb(69, 144, 255);
+
+  --font-size: 1.6rem;
 }
 
 * {
@@ -17,17 +21,91 @@ body {
 }
 
 html {
-  height: 100%;
-  width: 100%;
-  font-size: 62.5%;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 62.5%;
+  background-color: #f0f0f0;
 }
 
-#graph-container,
-#selectable-graph-container {
-  margin-top: 10px;
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 3rem;
+  margin-bottom: 1.2rem;
+  border: 0.2rem solid black;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+.header-left {
+  display: flex;
+  gap: 4rem;
+}
+
+.header-right {
+  display: flex;
+  gap: 2rem;
+}
+
+button,
+select {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+button {
+  font-size: var(--font-size);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+select,
+::picker(select) {
+  appearance: base-select;
+}
+
+select {
+  font-size: var(--font-size);
+  border: 2px solid #dddddd;
+  background: #dddddd;
+  padding: 10px;
+  transition: 0.4s;
+  border: none;
+}
+
+option {
+  display: flex;
+  justify-content: flex-start;
+  gap: 20px;
+
+  padding: 10px;
+  transition: 0.4s;
+}
+
+option:first-of-type {
+  border-radius: 8px 8px 0 0;
+}
+
+option:last-of-type {
+  border-radius: 0 0 8px 8px;
+}
+
+::picker(select) {
+  border-radius: 8px;
+}
+
+.clear-button {
+  display: none;
+}
+
+i {
+  font-size: 2.6rem;
 }
 
 .graph-row {
@@ -36,17 +114,28 @@ html {
 
 .graph-node {
   margin: 0.5px;
-  min-width: 3rem;
-  min-height: 3rem;
+  min-width: 2.8rem;
+  min-height: 2.8rem;
+  aspect-ratio: 1;
   border: 1px solid rgb(69, 144, 255);
   border-radius: 0px;
+
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 2.8rem 2.8rem;
+}
+
+.empty-node {
+  /* background-image: url("./textures/stone.webp"); */
 }
 
 .start-node {
+  /* background-image: url("./textures/steve.jpg"); */
   background-color: green;
 }
 
 .target-node {
+  /* background-image: url("./textures/diamond_ore.webp"); */
   background-color: red;
 }
 
@@ -57,8 +146,8 @@ html {
 .visited-node::before {
   position: absolute;
   content: "";
-  width: 2.8rem;
-  height: 2.8rem;
+  width: 2.6rem;
+  height: 2.6rem;
   background-color: blue;
   transform: scale(0);
 }
@@ -70,16 +159,17 @@ html {
   animation-fill-mode: forwards;
 }
 
-.visited-node.path-node {
-  background-color: blue;
-}
-
 .path-node::before {
   position: absolute;
   content: "";
   transform: scale(0);
-  width: 2.8rem;
-  height: 2.8rem;
+  width: 2.6rem;
+  height: 2.6rem;
+
+  /* background-image: url("./textures/steve.jpg"); */
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 2rem 2rem;
   background-color: yellow;
 }
 
@@ -91,15 +181,22 @@ html {
 }
 
 .wall-node {
+  /* background-image: url(./textures/tnt.jpg); */
   background-color: purple;
 }
 
 .weight-node {
+  /* background-image: url(./textures/lava.webp); */
   background-color: orange;
 }
 
 .path-node {
   position: relative;
+  background-color: blue;
+}
+
+.weight-node.path-node {
+  /* background-image: url(./textures/lava.webp); */
 }
 
 .selectable {
