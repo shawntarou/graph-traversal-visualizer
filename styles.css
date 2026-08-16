@@ -1,11 +1,6 @@
 :root {
-  --sky-blue: #79d7fd;
-  --ocean-blue: #00bbfa;
-  --midnight-navy: #001736;
-  --deep-navy: #00183e;
-  --gold: #ffc54a;
-
-  --header: rgb(69, 144, 255);
+  --graph: rgb(69, 144, 255);
+  --visited: blue;
 
   --font-size: 1.6rem;
 }
@@ -41,14 +36,10 @@ header {
   border-radius: 20px;
 }
 
-.header-left {
-  display: flex;
-  gap: 4rem;
-}
-
+.header-left,
 .header-right {
   display: flex;
-  gap: 2rem;
+  gap: 4rem;
 }
 
 button,
@@ -117,7 +108,7 @@ i {
   min-width: 2.8rem;
   min-height: 2.8rem;
   aspect-ratio: 1;
-  border: 1px solid rgb(69, 144, 255);
+  border: 1px solid var(--graph);
   border-radius: 0px;
 
   background-position: center;
@@ -125,17 +116,18 @@ i {
   background-size: 2.8rem 2.8rem;
 }
 
-.empty-node {
-  /* background-image: url("./textures/stone.webp"); */
+main {
+  display: flex;
+  justify-content: center;
 }
 
 .start-node {
-  /* background-image: url("./textures/steve.jpg"); */
+  background: url(./icons/start-icon.svg);
   background-color: green;
 }
 
 .target-node {
-  /* background-image: url("./textures/diamond_ore.webp"); */
+  background: url(./icons/target-icon.svg);
   background-color: red;
 }
 
@@ -148,7 +140,7 @@ i {
   content: "";
   width: 2.6rem;
   height: 2.6rem;
-  background-color: blue;
+  background-color: var(--visited);
   transform: scale(0);
 }
 
@@ -159,18 +151,17 @@ i {
   animation-fill-mode: forwards;
 }
 
+.path-node {
+  position: relative;
+  background-color: var(--visited);
+}
+
 .path-node::before {
   position: absolute;
   content: "";
   transform: scale(0);
   width: 2.6rem;
   height: 2.6rem;
-
-  /* background-image: url("./textures/steve.jpg"); */
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 2rem 2rem;
-  background-color: yellow;
 }
 
 .path-node.active::before {
@@ -181,22 +172,13 @@ i {
 }
 
 .wall-node {
-  /* background-image: url(./textures/tnt.jpg); */
   background-color: purple;
 }
 
 .weight-node {
-  /* background-image: url(./textures/lava.webp); */
-  background-color: orange;
-}
-
-.path-node {
   position: relative;
-  background-color: blue;
-}
-
-.weight-node.path-node {
-  /* background-image: url(./textures/lava.webp); */
+  background: url(./icons/weight-icon.svg);
+  background-color: orange;
 }
 
 .selectable {
@@ -222,7 +204,7 @@ i {
   100% {
     transform: scale(1);
     border-radius: 0px;
-    background-color: blue;
+    background-color: var(--visited);
   }
 }
 
@@ -241,5 +223,18 @@ i {
     transform: scale(1);
     border-radius: 0px;
     background-color: yellow;
+  }
+}
+
+@media (max-width: 600px) {
+  header {
+    padding: 0 1rem 0 1rem;
+    gap: 0;
+    justify-content: space-evenly;
+  }
+
+  .header-left,
+  .header-right {
+    gap: 1rem;
   }
 }

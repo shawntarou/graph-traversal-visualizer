@@ -40,8 +40,6 @@ export class GraphNode {
       this.graphNodeElement.classList.add("wall-node");
     } else if (this.weight > 1.0) {
       this.graphNodeElement.classList.add("weight-node");
-    } else {
-      this.graphNodeElement.classList.add("empty-node");
     }
   }
 

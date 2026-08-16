@@ -117,9 +117,6 @@ export class Graph {
 
       const id = setTimeout(() => {
         currentNode.graphNodeElement.classList.add("active");
-        currentNode.graphNodeElement.addEventListener("animationend", () => {
-          currentNode.graphNodeElement.classList.remove("empty-node");
-        });
       }, delay);
 
       this.#timeoutRefs.push(id);
@@ -143,7 +140,6 @@ export class Graph {
     for (let i = 0; i < pathNodes.length; ++i) {
       const delay = 100 * i;
       let currentNode = pathNodes[i];
-      currentNode.graphNodeElement.classList.remove("empty-node");
       currentNode.graphNodeElement.classList.remove("active");
       currentNode.graphNodeElement.classList.add("path-node");
       currentNode.graphNodeElement.classList.remove("visited-node");
