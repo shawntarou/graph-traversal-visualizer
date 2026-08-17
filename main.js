@@ -11,8 +11,9 @@ class GraphTraversalVisualizer {
   #selecting_target = false;
   #leftClickDown = false;
   #rightClickDown = false;
-  #lastSelectedAlgo;
+  #lastSelectedAlgo = "BFS";
   #UIEnabled = false;
+  #speed;
 
   constructor() {
     this.graph = new Graph(
@@ -31,6 +32,7 @@ class GraphTraversalVisualizer {
   cacheDOM() {
     this.resetButton = document.querySelector(".reset-button");
     this.algoSelector = document.querySelector("#algo-selector");
+    this.speedSelector = document.querySelector("#speed-selector");
     this.runButton = document.querySelector(".run-algo-button");
     this.clearButton = document.querySelector(".clear-button");
     this.addWeightButton = document.querySelector(".add-weight-button");
@@ -61,6 +63,11 @@ class GraphTraversalVisualizer {
       } else {
         this.addWeightButton.disabled = true;
       }
+    });
+
+    this.speedSelector.addEventListener("change", () => {
+      this.clearGraph();
+      this.graph.delay = this.getDelay();
     });
 
     this.resetButton.addEventListener("click", () => this.resetGraph());
@@ -164,6 +171,7 @@ class GraphTraversalVisualizer {
       this.#width,
       this.#start,
       this.#target,
+      this.getDelay(),
     );
     this.graph.drawGraph();
 
@@ -286,6 +294,14 @@ class GraphTraversalVisualizer {
     const row = parseInt(idArr[1]);
     const col = parseInt(idArr[2]);
     return [row, col];
+  }
+
+  getDelay() {
+    if (this.speedSelector.value == "normal") {
+      return 100;
+    } else {
+      return 10;
+    }
   }
 
   runAlgo() {

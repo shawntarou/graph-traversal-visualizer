@@ -14,11 +14,17 @@
   <body>
     <header>
       <div class="header-left">
-        <select id="algo-selector">
-          <option value="BFS">Breadth-First Search</option>
-          <option value="DFS">Depth-First Search</option>
-          <option value="dijkstra">Dijkstra's Algorithm</option>
-        </select>
+        <div class="selectors">
+          <select id="speed-selector">
+            <option value="fast">Fast</option>
+            <option value="normal">Normal</option>
+          </select>
+          <select id="algo-selector">
+            <option value="BFS">Breadth-First Search</option>
+            <option value="DFS">Depth-First Search</option>
+            <option value="dijkstra">Dijkstra's Algorithm</option>
+          </select>
+        </div>
 
         <button class="run-algo-button" title="Run Selected Algorithm">
           <i class="fa-solid fa-play"></i>

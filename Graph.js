@@ -17,11 +17,12 @@ export class Graph {
   #containerElement = document.querySelector("#graph-container");
   #timeoutRefs = [];
 
-  constructor(height, width, start, target) {
+  constructor(height, width, start, target, delay = 10) {
     this.height = height;
     this.width = width;
     this.#start = start;
     this.#target = target;
+    this.delay = delay;
   }
 
   drawGraph() {
@@ -62,7 +63,7 @@ export class Graph {
   }
 
   clearWeights() {
-    this.weights = [];
+    this.#weights = [];
   }
 
   #clearTimeouts() {
@@ -100,7 +101,7 @@ export class Graph {
           alert("Target not found!");
         }
       },
-      10 * visitedNodes.length + 1000,
+      this.delay * visitedNodes.length + 1000,
     );
 
     this.#timeoutRefs.push(id);
@@ -108,7 +109,7 @@ export class Graph {
 
   displayVisitedNodes(visitedNodes) {
     for (let i = 1; i < visitedNodes.length; ++i) {
-      const delay = 10 * i;
+      const delay = this.delay * i;
       const currentNode = visitedNodes[i];
 
       if (currentNode.weight > 1.0 || currentNode === this.targetNode) {

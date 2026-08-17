@@ -38,7 +38,7 @@ export class GraphNode {
       this.graphNodeElement.classList.add("target-node");
     } else if (this.isWall) {
       this.graphNodeElement.classList.add("wall-node");
-    } else if (this.weight > 1.0) {
+    } else if (this.weight > 1) {
       this.graphNodeElement.classList.add("weight-node");
     }
   }
@@ -47,7 +47,7 @@ export class GraphNode {
     this.isStart = false;
     this.isTarget = false;
     this.isWall = false;
-    this.weight = 0;
+    this.weight = 1;
     this.updateGraphNodeElement();
   }
 
@@ -55,7 +55,7 @@ export class GraphNode {
     this.isStart = false;
     this.isTarget = false;
     this.isWall = false;
-    this.weight = 0;
+    this.weight = 1;
     this.updateGraphNodeElement();
     this.graphNodeElement.classList.add("selectable");
   }
