@@ -13,7 +13,6 @@ class GraphTraversalVisualizer {
   #rightClickDown = false;
   #lastSelectedAlgo = "BFS";
   #UIEnabled = false;
-  #speed;
 
   constructor() {
     this.graph = new Graph(
