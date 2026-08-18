@@ -15,11 +15,17 @@ An Interactive Graph Traversal Visualizer inspired by clementmihailescu's [Pathf
 
 ## Features
 
+- Add / Remove Walls (Algorithm cannot traverse through walls)
 - Select Visualization Speed (Default: Fast)
 - Select Algorithm (Default: Breadth-First Search)
 - Run Algorithm
 - Clear Graph - Clears visualization
 - Reset Graph - Clears walls / weights. Resets start and target to default positions.
-- Add Weight (Only works when selected algorithm is Dijkstra's)
+- Add / Remove Weights (Only works when selected algorithm is Dijkstra's)
 - Set Start Position
 - Set Target Position
+
+## Misc Features
+
+- Graph sizes to window size on page load
+- Compatible with mobile devices, however, you can only remove walls / weights by resetting graph
