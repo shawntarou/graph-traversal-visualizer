@@ -1,6 +1,6 @@
 # Graph Traversal Visualizer
 
-An Interactive Graph Traversal Visualizer inspired by @clementmihailescu [Pathfinding Visualizer](https://github.com/clementmihailescu/Pathfinding-Visualizer)! Great for visualizing pathfinding/traversal algorithms across a graph-like data structure. Also very satisfying to look at.
+An Interactive Graph Traversal Visualizer inspired by clementmihailescu's [Pathfinding Visualizer](https://github.com/clementmihailescu/Pathfinding-Visualizer)! Great for visualizing pathfinding/traversal algorithms across a graph-like data structure. Also very satisfying to look at.
 
 ## Algorithms
 
